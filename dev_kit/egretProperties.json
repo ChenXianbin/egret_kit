@@ -1,0 +1,28 @@
+{
+  "engineVersion": "5.1.10",
+  "compilerVersion": "5.1.10",
+  "template": {},
+  "target": {
+    "current": "wxgame"
+  },
+  "modules": [
+    {
+      "name": "egret"
+    },
+    {
+      "name": "game"
+    },
+    {
+      "name": "tween"
+    },
+    {
+      "name": "assetsmanager"
+    },
+    {
+      "name": "socket"
+    },
+    {
+      "name": "promise"
+    }
+  ]
+}
