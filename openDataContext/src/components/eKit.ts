@@ -228,4 +228,30 @@ class eKit {
         }
         return shp;
     }
+
+
+
+    /**
+     * 传入一个DisplayObject，将其从其父元素上移除
+     * @param  {egret.DisplayObject} children
+     */
+    public static removeChild(children: egret.DisplayObject) {
+        if (children.parent) {
+            children.parent.removeChild(children);
+        }
+    }
+
+
+    /**
+     * 清空显示容器内显示元素，可输入start防止索引号之前的元素被清空
+     * @param  {egret.DisplayObjectContainer} displayObjectContainer
+     * @param  {number} start?
+     */
+    public static clearView(displayObjectContainer: egret.DisplayObjectContainer, start?: number) {
+        isNaN(start) && (start = -1);
+        while (displayObjectContainer.$children.length > start + 1) {
+            displayObjectContainer.removeChildAt(start + 1);
+        }
+        return true;
+    }
 }

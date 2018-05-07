@@ -6,7 +6,7 @@ class Records {
     // 世界排行榜总表
     private static worldRankings: any;
     // 玩家当前局成绩
-    private static score: number = 101;
+    private static score: number = 0;
     // 玩家当前记录类型
     private static record_type:number;
 

@@ -4,6 +4,20 @@
 
 对egret引擎开发微信小游戏过程中的通用数据结构及基础代码进行提取，方便复用
 
+## 套件示例使用
+
+    拉取整套套件，以egret launcher导入dev_kit项目，
+    
+    设置发布为微信小程序，填入小程序appid 
+   
+    根据自身项目服务器接口逻辑，配置dev_kit/src/GameData/GameConfig.ts内basicUrl地址
+    
+    可按项目接口格式要求调整 dev_kit/src/components/Http.ts 内请求格式
+    
+    若开放数据域同样有自身接口需求，配置openDataContext/src/data/GameConfig.ts内basicUrl地址
+    
+    部分常用接口调用示例，可见dev_kit/src/main.ts 内 createGameScene()方法
+
 ## 套件功能点：
 
 ### 0.wx_mini_game.d.ts声明文件优化（进行中）

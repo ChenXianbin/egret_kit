@@ -128,8 +128,6 @@ var WxPlatform = (function () {
                         wx.setUserCloudStorage({
                             KVDataList: dataList,
                             success: function (res) {
-                                console.log(res);
-                                console.log('上传成功');
                                 resolve(res);
                             },
                             fail: function (err) {
@@ -268,7 +266,7 @@ var GameConfig = (function () {
     GameConfig.getHeight = function () { return this.stageHeight; };
     ;
     // http通讯地址
-    GameConfig.basicUrl = "https://pile-up.api.wxagame.com/api/v1";
+    GameConfig.basicUrl = "";
     // 游戏自定义ID
     GameConfig.appCode = 1;
     // 游戏版本号
@@ -767,7 +765,7 @@ var Records = (function () {
         });
     };
     // 玩家当前局成绩
-    Records.score = 101;
+    Records.score = 0;
     return Records;
 }());
 __reflect(Records.prototype, "Records");
@@ -877,60 +875,142 @@ var Main = (function (_super) {
         var _this = this;
         // 设置游戏参数内的默认舞台宽高
         GameConfig.setStageWidthHeight(this.stage);
+        // 刷新版本控制数据
+        VersionCtrl.refreshVersionCtrl();
+        // 绘制背景
         var sky = eKit.createBitmapByName("bg_jpg", { width: GameConfig.getWidth(), height: GameConfig.getHeight(), x: 0, y: 0, touchEnabled: true });
         this.addChild(sky);
+        /**
+         *常用调用示例
+         *
+         */
         // 分享调用示例
-        // sky.addEventListener(egret.TouchEvent.TOUCH_TAP, () => { WxKit.shareGame('normalShare', '我就试试分享', 'get') }, this);
+        var share_btn = eKit.createSprite({ x: 20, y: 20 });
+        this.addChild(share_btn);
+        var btn_bg = eKit.createRect([0, 0, 120, 60], { beginFill: { color: 0x9988ff, alpha: 1 } }, { touchEnabled: true });
+        share_btn.addChild(btn_bg);
+        share_btn.addChild(eKit.createText('调用分享', { width: 120, height: 60, size: 20, textAlign: 'center', verticalAlign: 'middle' }));
+        share_btn.addEventListener(egret.TouchEvent.TOUCH_TAP, function () { WxKit.shareGame('normalShare', '我就试试分享', 'get'); }, this);
         // 事件音乐调用示例
-        // sky.addEventListener(egret.TouchEvent.TOUCH_TAP,()=>{
-        //     Mp3.playEvent('success')
-        // },this);
+        var music_btn = eKit.createSprite({ x: 20, y: 100 });
+        this.addChild(music_btn);
+        var music_btn_bg = eKit.createRect([0, 0, 120, 60], { beginFill: { color: 0x9988ff, alpha: 1 } }, { touchEnabled: true });
+        music_btn.addChild(music_btn_bg);
+        music_btn.addChild(eKit.createText('调用音乐', { width: 120, height: 60, size: 20, textAlign: 'center', verticalAlign: 'middle' }));
+        music_btn_bg.addEventListener(egret.TouchEvent.TOUCH_TAP, function () {
+            Mp3.playEvent('success');
+        }, this);
         // 分享重生调用示例
-        // sky.addEventListener(egret.TouchEvent.TOUCH_TAP,async () => {
-        //     // 可根据reborn_result的布尔值判断是否重生成功
-        //      let reborn_result = await WxKit.rebornGame('我来试试重生','get');
-        //      console.log('能否重生'+reborn_result);
-        // }, this);
-        // 获取周最高成绩调用示例
-        // sky.addEventListener(egret.TouchEvent.TOUCH_TAP, async () => {
-        //     let score = await Records.getHistoryScore();
-        //     console.log('done');
-        // }, this);
-        // 世界排行榜
-        // sky.addEventListener(egret.TouchEvent.TOUCH_TAP, async () => {
-        //     // 网络请求更新世界排行榜
-        //     let ranking = await Records.refreshWorldRanking();
-        //     console.log(ranking);
-        //     console.log('done');
-        //     // 获取已缓存的排行榜数据
-        //     let getRanking = Records.getRankings();
-        //     getRanking.push('1');
-        //     console.log(getRanking);
-        //     console.log(Records.getRankings());
-        // }, this);
-        // 调用开放数据域获取好友排行榜
-        // sky.addEventListener(egret.TouchEvent.TOUCH_TAP, async () => {
-        //     let open_data:egret.Sprite = WxKit.linkOpenData({});
-        //     // this.addChild(open_data);
-        // }, this);
-        // 调用开放数据域获取好友排行榜
-        sky.addEventListener(egret.TouchEvent.TOUCH_TAP, function () { return __awaiter(_this, void 0, void 0, function () {
+        var reborn_btn = eKit.createSprite({ x: 20, y: 180 });
+        this.addChild(reborn_btn);
+        var reborn_btn_bg = eKit.createRect([0, 0, 120, 60], { beginFill: { color: 0x9988ff, alpha: 1 } }, { touchEnabled: true });
+        reborn_btn.addChild(reborn_btn_bg);
+        reborn_btn.addChild(eKit.createText('调用重生', { width: 120, height: 60, size: 20, textAlign: 'center', verticalAlign: 'middle' }));
+        reborn_btn_bg.addEventListener(egret.TouchEvent.TOUCH_TAP, function () { return __awaiter(_this, void 0, void 0, function () {
+            var reborn_result;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, Records.uploadScore()];
+                    case 0: return [4 /*yield*/, WxKit.rebornGame('我来试试重生', 'get')];
                     case 1:
-                        _a.sent();
+                        reborn_result = _a.sent();
+                        console.log('能否重生' + reborn_result);
                         return [2 /*return*/];
                 }
             });
         }); }, this);
-        VersionCtrl.refreshVersionCtrl();
+        // 获取最高成绩调用示例
+        var get_hight_score_btn = eKit.createSprite({ x: 20, y: 260 });
+        this.addChild(get_hight_score_btn);
+        var get_hight_score_btn_bg = eKit.createRect([0, 0, 120, 60], { beginFill: { color: 0x9988ff, alpha: 1 } }, { touchEnabled: true });
+        get_hight_score_btn.addChild(get_hight_score_btn_bg);
+        get_hight_score_btn.addChild(eKit.createText('最高成绩', { width: 120, height: 60, size: 20, textAlign: 'center', verticalAlign: 'middle' }));
+        get_hight_score_btn_bg.addEventListener(egret.TouchEvent.TOUCH_TAP, function () { return __awaiter(_this, void 0, void 0, function () {
+            var score;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, Records.getHistoryScore()];
+                    case 1:
+                        score = _a.sent();
+                        console.log('最高成绩:' + score);
+                        return [2 /*return*/];
+                }
+            });
+        }); }, this);
+        // 世界排行榜
+        var http_ranking_btn = eKit.createSprite({ x: 20, y: 340 });
+        this.addChild(http_ranking_btn);
+        var http_ranking_btn_bg = eKit.createRect([0, 0, 120, 60], { beginFill: { color: 0x9988ff, alpha: 1 } }, { touchEnabled: true });
+        http_ranking_btn.addChild(http_ranking_btn_bg);
+        http_ranking_btn.addChild(eKit.createText('网络排行榜', { width: 120, height: 60, size: 20, textAlign: 'center', verticalAlign: 'middle' }));
+        http_ranking_btn_bg.addEventListener(egret.TouchEvent.TOUCH_TAP, function () { return __awaiter(_this, void 0, void 0, function () {
+            var ranking;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, Records.refreshWorldRanking()];
+                    case 1:
+                        ranking = _a.sent();
+                        console.log(ranking);
+                        console.log('done');
+                        return [2 /*return*/];
+                }
+            });
+        }); }, this);
+        // 缓存排行榜
+        var ranking_btn = eKit.createSprite({ x: 20, y: 420 });
+        this.addChild(ranking_btn);
+        var ranking_btn_bg = eKit.createRect([0, 0, 120, 60], { beginFill: { color: 0x9988ff, alpha: 1 } }, { touchEnabled: true });
+        ranking_btn.addChild(ranking_btn_bg);
+        ranking_btn.addChild(eKit.createText('缓存排行榜', { width: 120, height: 60, size: 20, textAlign: 'center', verticalAlign: 'middle' }));
+        ranking_btn_bg.addEventListener(egret.TouchEvent.TOUCH_TAP, function () { return __awaiter(_this, void 0, void 0, function () {
+            var ranking;
+            return __generator(this, function (_a) {
+                ranking = Records.getRankings();
+                console.log(ranking);
+                console.log('done');
+                return [2 /*return*/];
+            });
+        }); }, this);
+        // 调用开放数据域获取好友排行榜
+        var friend_ranking_btn = eKit.createSprite({ x: 20, y: 500 });
+        this.addChild(friend_ranking_btn);
+        var friend_ranking_btn_bg = eKit.createRect([0, 0, 120, 60], { beginFill: { color: 0x9988ff, alpha: 1 } }, { touchEnabled: true });
+        friend_ranking_btn.addChild(friend_ranking_btn_bg);
+        friend_ranking_btn.addChild(eKit.createText('好友排行榜', { width: 120, height: 60, size: 20, textAlign: 'center', verticalAlign: 'middle' }));
+        friend_ranking_btn_bg.addEventListener(egret.TouchEvent.TOUCH_TAP, function () { return __awaiter(_this, void 0, void 0, function () {
+            var open_data;
+            return __generator(this, function (_a) {
+                open_data = WxKit.linkOpenData({});
+                return [2 /*return*/];
+            });
+        }); }, this);
+        // 调用Records.uploadScore上传成绩到自己服务器及腾讯云服务器
+        // sky.addEventListener(egret.TouchEvent.TOUCH_TAP, async () => {
+        //    await Records.uploadScore();
+        // }, this);
+        // 清空按钮
+        var clear_btn = eKit.createSprite({ x: 20, y: 580 });
+        this.addChild(clear_btn);
+        var clear_btn_bg = eKit.createRect([0, 0, 120, 60], { beginFill: { color: 0x9988ff, alpha: 1 } }, { touchEnabled: true });
+        clear_btn.addChild(clear_btn_bg);
+        clear_btn.addChild(eKit.createText('清空按钮', { width: 120, height: 60, size: 20, textAlign: 'center', verticalAlign: 'middle' }));
+        clear_btn_bg.addEventListener(egret.TouchEvent.TOUCH_TAP, function () { return __awaiter(_this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                eKit.clearView(this, 0);
+                return [2 /*return*/];
+            });
+        }); }, this);
         // 播放背景音乐
         Mp3.playBGM();
     };
     return Main;
 }(egret.DisplayObjectContainer));
 __reflect(Main.prototype, "Main");
+var Ws = (function () {
+    function Ws() {
+    }
+    return Ws;
+}());
+__reflect(Ws.prototype, "Ws");
 /**
    * WxKit为优化使用小游戏中常用的函数方法调用
    *
@@ -1216,6 +1296,20 @@ var eKit = (function () {
      * @param  {string} name
      * @param  {Object} settings?
      */
+    eKit.createSprite = function (settings) {
+        var result = new egret.Sprite();
+        if (settings) {
+            for (var key in settings) {
+                result[key] = settings[key];
+            }
+        }
+        return result;
+    };
+    /**
+     * 根据name关键字创建一个Bitmap对象。name属性请参考resources/resource.json配置文件的内容。
+     * @param  {string} name
+     * @param  {Object} settings?
+     */
     eKit.createBitmapByName = function (name, settings) {
         var result = new egret.Bitmap();
         var texture = RES.getRes(name);
@@ -1438,6 +1532,27 @@ var eKit = (function () {
             }
         }
         return shp;
+    };
+    /**
+     * 传入一个DisplayObject，将其从其父元素上移除
+     * @param  {egret.DisplayObject} children
+     */
+    eKit.removeChild = function (children) {
+        if (children.parent) {
+            children.parent.removeChild(children);
+        }
+    };
+    /**
+     * 清空显示容器内显示元素，可输入start防止索引号之前的元素被清空
+     * @param  {egret.DisplayObjectContainer} displayObjectContainer
+     * @param  {number} start?
+     */
+    eKit.clearView = function (displayObjectContainer, start) {
+        isNaN(start) && (start = -1);
+        while (displayObjectContainer.$children.length > start + 1) {
+            displayObjectContainer.removeChildAt(start + 1);
+        }
+        return true;
     };
     return eKit;
 }());

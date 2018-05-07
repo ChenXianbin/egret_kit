@@ -1,8 +1,23 @@
-  /**
-     * eKit为优化使用方法后的egret引擎常用函数调用，包括创建bitmap，text，shape等
-     *
-     */
+/**
+   * eKit为优化使用方法后的egret引擎常用函数调用，包括创建bitmap，text，shape等
+   *
+   */
 class eKit {
+
+    /**
+     * 根据name关键字创建一个Bitmap对象。name属性请参考resources/resource.json配置文件的内容。
+     * @param  {string} name
+     * @param  {Object} settings?
+     */
+    public static createSprite(settings?: Object) {
+        let result = new egret.Sprite();
+        if (settings) {
+            for (let key in settings) {
+                result[key] = settings[key];
+            }
+        }
+        return result;
+    }
 
     /**
      * 根据name关键字创建一个Bitmap对象。name属性请参考resources/resource.json配置文件的内容。
@@ -233,5 +248,30 @@ class eKit {
             }
         }
         return shp;
+    }
+
+
+    /**
+     * 传入一个DisplayObject，将其从其父元素上移除
+     * @param  {egret.DisplayObject} children
+     */
+    public static removeChild(children: egret.DisplayObject) {
+        if (children.parent) {
+            children.parent.removeChild(children);
+        }
+    }
+
+
+    /**
+     * 清空显示容器内显示元素，可输入start防止索引号之前的元素被清空
+     * @param  {egret.DisplayObjectContainer} displayObjectContainer
+     * @param  {number} start?
+     */
+    public static clearView(displayObjectContainer: egret.DisplayObjectContainer, start?: number) {
+        isNaN(start) && (start = -1);
+        while (displayObjectContainer.$children.length > start + 1) {
+            displayObjectContainer.removeChildAt(start + 1);
+        }
+        return true;
     }
 }
