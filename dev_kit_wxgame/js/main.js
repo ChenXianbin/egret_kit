@@ -266,7 +266,7 @@ var GameConfig = (function () {
     GameConfig.getHeight = function () { return this.stageHeight; };
     ;
     // http通讯地址
-    GameConfig.basicUrl = "";
+    GameConfig.basicUrl = "https://pile-up.api.wxagame.com/api/v1";
     // 游戏自定义ID
     GameConfig.appCode = 1;
     // 游戏版本号
@@ -996,6 +996,21 @@ var Main = (function (_super) {
         clear_btn_bg.addEventListener(egret.TouchEvent.TOUCH_TAP, function () { return __awaiter(_this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 eKit.clearView(this, 0);
+                return [2 /*return*/];
+            });
+        }); }, this);
+        // 清空按钮
+        var particle_btn = eKit.createSprite({ x: 20, y: 660 });
+        this.addChild(particle_btn);
+        var particle_btn_bg = eKit.createRect([0, 0, 120, 60], { beginFill: { color: 0x9988ff, alpha: 1 } }, { touchEnabled: true });
+        particle_btn.addChild(particle_btn_bg);
+        particle_btn.addChild(eKit.createText('触发粒子', { width: 120, height: 60, size: 20, textAlign: 'center', verticalAlign: 'middle' }));
+        particle_btn_bg.addEventListener(egret.TouchEvent.TOUCH_TAP, function () { return __awaiter(_this, void 0, void 0, function () {
+            var system;
+            return __generator(this, function (_a) {
+                system = new particle.GravityParticleSystem(RES.getRes('boom_01_png'), RES.getRes('boom_01_json'));
+                system.start(50);
+                this.addChild(system);
                 return [2 /*return*/];
             });
         }); }, this);

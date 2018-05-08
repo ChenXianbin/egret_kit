@@ -1,7 +1,7 @@
 {
 	"description": "项目配置文件。",
 	"setting": {
-		"urlCheck": true,
+		"urlCheck": false,
 		"es6": true,
 		"postcss": true,
 		"minified": true,
@@ -9,8 +9,8 @@
 	},
 	"compileType": "game",
 	"libVersion": "game",
-	"appid": "wx6ac3f5090a6b99c5",
-	"projectname": "%E6%B5%8B%E8%AF%95%E5%8F%91%E5%B8%83",
+	"appid": "wx1d83e96506340071",
+	"projectname": "dev_kit",
 	"condition": {
 		"search": {
 			"current": -1,

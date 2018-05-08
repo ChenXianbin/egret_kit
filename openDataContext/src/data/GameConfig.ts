@@ -6,7 +6,7 @@
 class GameConfig{
 
     // http通讯地址
-    private static basicUrl:string = "";
+    private static basicUrl:string = "https://pile-up.api.wxagame.com/api/v1";
     // 游戏自定义ID
     private static appCode:number = 1;
     // 游戏版本号
