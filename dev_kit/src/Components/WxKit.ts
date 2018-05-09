@@ -30,6 +30,7 @@ class WxKit {
         Api.setToken(result.data.token);
         UserData.setUserData(result.data);
         Api.postEvent('open');
+        console.log('login_success');
         return result;
     }
 

@@ -9,5 +9,5 @@ class SoundRes{
     ];
 
     // 定义背景音乐路径
-    public static bgm:string = 'resource/assets/mp3/bgm.mp3'
+    public static bgm:string = 'resource/assets/BgM/game_music.mp3'
 }

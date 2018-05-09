@@ -13,14 +13,15 @@ class Api {
     public static baseUrl = baseUrl;
 
     // api地址
-    private static uploadRecordsPath = baseUrl + "/records"
-    public static bestRecordPath = baseUrl + "/best_record"
-    public static getRankingsPath = baseUrl + "/rankings"
+    private static uploadRecordsPath = baseUrl + "/v1/upload_record"
+    public static bestRecordPath = baseUrl + "/v2/best_record"
+    public static getRankingsPath = baseUrl + "/v2/week_rank_list"
     public static getShareUrlPath = baseUrl + "/share_url"
-    public static getOpenIdPath = baseUrl + "/users"
+    // public static getOpenIdPath = baseUrl + "/users"
     public static postEventPath = baseUrl + "/events"
     public static tunnelPath = baseUrl + "/tunnel"
-    public static configurationsPath = baseUrl + "/configurations"
+    public static configurationsPath = baseUrl + "/v1/config"
+    public static difficultyPath = baseUrl + "/v1/jsonconfig/difficulty_level"
 
     public static async post(url, data) {
         return new Promise((resolve, reject) => {
@@ -35,7 +36,7 @@ class Api {
             request.send(data);
             request.addEventListener(egret.Event.COMPLETE, function (evt: egret.Event) {
                 let res = <egret.HttpRequest>evt.currentTarget;
-                resolve(JSON.parse(res.response))
+                res.response?resolve(JSON.parse(res.response)):resolve({});
             }, this)
             request.addEventListener(egret.IOErrorEvent.IO_ERROR, function (evt: egret.IOErrorEvent) {
                 reject(evt);
@@ -73,6 +74,9 @@ class Api {
      */
     public static async uploadRecords(record_data) {
         let result = true;
+        // MD5签名
+        record_data = MD5.createSignObject(record_data);
+
         await Api.post(Api.uploadRecordsPath, record_data).catch((e) => {
             result = false;
         });
@@ -83,9 +87,9 @@ class Api {
      * getBestRecord 根据传入的时间范围，调用后返回传入时间范围内最佳成绩，如有错误，则返回null
      * @param  {} timeRange
      */
-    public static async getBestRecord(timeRange) {
+    public static async getBestRecord(record_type) {
         let result = null;
-        await Api.post(Api.bestRecordPath, timeRange).then((res) => {
+        await Api.get(Api.bestRecordPath+'?record_type='+record_type).then((res) => {
             result = res;
         }).catch((e) => {
             result = null;
@@ -106,7 +110,7 @@ class Api {
             fail: () => { },
             complete: () => { }
         });
-        await Api.get(Api.getRankingsPath).then((res) => {
+        await Api.get(Api.getRankingsPath+'?record_type=1&page=1&per_page=200').then((res) => {
             result = res;
         }).catch((e) => {
             result = null;
@@ -151,7 +155,12 @@ class Api {
      * 事件埋点
      * @param  {number} event_type
      */
+
+    private static doPostEvent = false;
     public static async postEvent(event_type: any) {
+        if(!this.doPostEvent){
+            return true;
+        }
         if(isNaN(event_type)){
             event_type = this.event_type.indexOf(event_type)+1;
         }else if(!this.event_type[event_type]){

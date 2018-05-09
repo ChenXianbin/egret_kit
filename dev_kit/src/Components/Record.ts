@@ -6,7 +6,7 @@ class Records {
     // 世界排行榜总表
     private static worldRankings: any;
     // 玩家当前局成绩
-    private static score: number = 0;
+    private static score: number = 62;
     // 玩家当前记录类型
     private static record_type:number;
 
@@ -17,12 +17,10 @@ class Records {
     public static async getWeekScore() {
         let weekTime = Utils.getWeekTime();
         let postData = {
-            user_id: UserData.getOpenId(),
-            start: weekTime[0],
-            end: weekTime[1]
+            record_type:1
         }
         let record = 0
-        await Api.getBestRecord(postData).then(res => { record = res['score'] });
+        await Api.getBestRecord(1).then(res => { record = res['week_best'] });
         this.weekScore = record;
         return record;
     }
@@ -32,12 +30,10 @@ class Records {
      */
     public static async getHistoryScore() {
         let postData = {
-            user_id: UserData.getOpenId(),
-            start: Utils.dateFtt(new Date(1970, 0, 1)),
-            end: Utils.dateFtt(new Date())
+           record_type:1
         }
         let record = 0
-        await Api.getBestRecord(postData).then(res => { record = res['score'] });
+        await Api.getBestRecord(1).then(res => { record = res['history_best'] });
         this.historyScore = record;
         return record;
     }

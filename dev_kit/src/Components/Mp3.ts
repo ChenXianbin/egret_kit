@@ -19,7 +19,12 @@ class Mp3 {
     }
 
     public static playBGM() {
-        this.bgm.play();
+        return false;
+        // this.bgm.play();
+    }
+
+    public static stopBGM(){
+        this.bgm.pause();
     }
 
     public static playEvent(event_name:string){
