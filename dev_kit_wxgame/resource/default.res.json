@@ -1,7 +1,7 @@
 {
 	"groups": [
 		{
-			"keys": "bg_jpg,boom_01_json,boom_01_png",
+			"keys": "bg_jpg,boom_png,boom_json",
 			"name": "preload"
 		}
 	],
@@ -17,14 +17,14 @@
 			"name": "description_json"
 		},
 		{
-			"url": "assets/partical/boom_01.json",
-			"type": "json",
-			"name": "boom_01_json"
+			"url": "assets/boom.png",
+			"type": "image",
+			"name": "boom_png"
 		},
 		{
-			"url": "assets/partical/boom_01.png",
-			"type": "image",
-			"name": "boom_01_png"
+			"url": "assets/boom.json",
+			"type": "json",
+			"name": "boom_json"
 		}
 	]
 }
