@@ -22,6 +22,7 @@ class Api {
     public static tunnelPath = baseUrl + "/tunnel"
     public static configurationsPath = baseUrl + "/v1/config"
     public static difficultyPath = baseUrl + "/v1/jsonconfig/difficulty_level"
+    public static loginPath = baseUrl + '/v1/auth_login'
 
     public static async post(url, data) {
         return new Promise((resolve, reject) => {
@@ -36,7 +37,7 @@ class Api {
             request.send(data);
             request.addEventListener(egret.Event.COMPLETE, function (evt: egret.Event) {
                 let res = <egret.HttpRequest>evt.currentTarget;
-                res.response?resolve(JSON.parse(res.response)):resolve({});
+                res.response ? resolve(JSON.parse(res.response)) : resolve({});
             }, this)
             request.addEventListener(egret.IOErrorEvent.IO_ERROR, function (evt: egret.IOErrorEvent) {
                 reject(evt);
@@ -44,7 +45,7 @@ class Api {
         })
     }
 
-    public static async get(url,noToken?) {
+    public static async get(url, noToken?) {
         return new Promise((resolve, reject) => {
             if (!Api.token && !noToken) {
                 reject('token为空，请重新登陆');
@@ -64,7 +65,7 @@ class Api {
         })
     }
 
-    public static getToken(){
+    public static getToken() {
         return this.token;
     }
 
@@ -89,7 +90,7 @@ class Api {
      */
     public static async getBestRecord(record_type) {
         let result = null;
-        await Api.get(Api.bestRecordPath+'?record_type='+record_type).then((res) => {
+        await Api.get(Api.bestRecordPath + '?record_type=' + record_type).then((res) => {
             result = res;
         }).catch((e) => {
             result = null;
@@ -110,7 +111,7 @@ class Api {
             fail: () => { },
             complete: () => { }
         });
-        await Api.get(Api.getRankingsPath+'?record_type=1&page=1&per_page=200').then((res) => {
+        await Api.get(Api.getRankingsPath + '?record_type=1&page=1&per_page=200').then((res) => {
             result = res;
         }).catch((e) => {
             result = null;
@@ -158,15 +159,15 @@ class Api {
 
     private static doPostEvent = false;
     public static async postEvent(event_type: any) {
-        if(!this.doPostEvent){
+        if (!this.doPostEvent) {
             return true;
         }
-        if(isNaN(event_type)){
-            event_type = this.event_type.indexOf(event_type)+1;
-        }else if(!this.event_type[event_type]){
+        if (isNaN(event_type)) {
+            event_type = this.event_type.indexOf(event_type) + 1;
+        } else if (!this.event_type[event_type]) {
             event_type = 0;
         }
-        if(event_type == 0){
+        if (event_type == 0) {
             throw new Error('事件传值不是预设的值');
         }
         Api.post(Api.postEventPath, { event_type: event_type });
@@ -177,7 +178,7 @@ class Api {
      */
     public static async getConfiguration() {
         let result = null;
-        await Api.get(Api.configurationsPath + '?version=' + version + '&app_code=' + app_code,true)
+        await Api.get(Api.configurationsPath + '?version=' + version + '&app_code=' + app_code, true)
             .then(res => { result = res[0]; })
             .catch(err => { console.warn(err) });
         return result;

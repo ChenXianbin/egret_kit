@@ -9,7 +9,7 @@ declare interface Platform {
 
     getFriendCloudStorage(): Promise<any>;
 
-    getGroupCloudStorage(shareTicket:string): Promise<any>;
+    getGroupCloudStorage(shareTicket: string): Promise<any>;
 
     getUserInfo(): Promise<any>;
 
@@ -19,7 +19,7 @@ declare interface Platform {
 
     auth(jsCode: String, iv: String, encryptedData: String): Promise<any>;
 
-    showAuthModal():Promise<any>;
+    showAuthModal(): Promise<any>;
 
 }
 
@@ -89,7 +89,7 @@ class WxPlatform implements Platform {
         });
     }
 
-    public  async setKVData(data) {
+    public async setKVData(data) {
         return new Promise((resolve, reject) => {
             let dataList = [];
             for (let key in data) {
@@ -108,7 +108,7 @@ class WxPlatform implements Platform {
     }
 
 
-    public  async login() {
+    public async login() {
         return new Promise((resolve, reject) => {
             wx.showLoading({
                 title: '游戏加载中...',
@@ -133,7 +133,7 @@ class WxPlatform implements Platform {
             }
             let that = this
             wx.request({
-                url: Api.baseUrl + '/auth_login',
+                url: Api.loginPath,
                 method: 'POST',
                 data: data,
                 success: function (res) {
@@ -172,7 +172,7 @@ class WxPlatform implements Platform {
     }
 
 
-    public  async showAuthModal() {
+    public async showAuthModal() {
         wx.hideLoading();
         return new Promise((resolve, reject) => {
             wx.showModal({

@@ -63,8 +63,8 @@ class Main extends egret.DisplayObjectContainer {
 
         // 调用WxKit.login完成微信登陆授权操作，返回openId,token等数据;
         await WxKit.login();
-        console.log(UserData.getOpenId());
-
+        // console.log(UserData.getOpenId());
+        wx.hideLoading();
 
 
     }
@@ -120,7 +120,7 @@ class Main extends egret.DisplayObjectContainer {
         music_btn.addChild(music_btn_bg);
         music_btn.addChild(eKit.createText('调用音乐', { width: 120, height: 60, size: 20, textAlign: 'center', verticalAlign: 'middle' }));
         music_btn_bg.addEventListener(egret.TouchEvent.TOUCH_TAP, () => {
-            Mp3.playEvent('success')
+            Mp3.playEvent('success');
         }, this);
 
         // 分享重生调用示例
@@ -135,43 +135,6 @@ class Main extends egret.DisplayObjectContainer {
             console.log('能否重生' + reborn_result);
         }, this);
 
-        // 获取最高成绩调用示例
-        let get_hight_score_btn = eKit.createSprite({ x: 20, y: 260 });
-        this.addChild(get_hight_score_btn);
-        let get_hight_score_btn_bg = eKit.createRect([0, 0, 120, 60], { beginFill: { color: 0x9988ff, alpha: 1 } }, { touchEnabled: true });
-        get_hight_score_btn.addChild(get_hight_score_btn_bg);
-        get_hight_score_btn.addChild(eKit.createText('最高成绩', { width: 120, height: 60, size: 20, textAlign: 'center', verticalAlign: 'middle' }));
-        get_hight_score_btn_bg.addEventListener(egret.TouchEvent.TOUCH_TAP, async () => {
-            let score = await Records.getHistoryScore();
-            console.log('最高成绩:' + score);
-        }, this);
-
-        // 世界排行榜
-        let http_ranking_btn = eKit.createSprite({ x: 20, y: 340 });
-        this.addChild(http_ranking_btn);
-        let http_ranking_btn_bg = eKit.createRect([0, 0, 120, 60], { beginFill: { color: 0x9988ff, alpha: 1 } }, { touchEnabled: true });
-        http_ranking_btn.addChild(http_ranking_btn_bg);
-        http_ranking_btn.addChild(eKit.createText('网络排行榜', { width: 120, height: 60, size: 20, textAlign: 'center', verticalAlign: 'middle' }));
-        http_ranking_btn_bg.addEventListener(egret.TouchEvent.TOUCH_TAP, async () => {
-            // 网络请求更新世界排行榜
-            let ranking = await Records.refreshWorldRanking();
-            console.log(ranking);
-            console.log('done');
-        }, this);
-
-        // 缓存排行榜
-        let ranking_btn = eKit.createSprite({ x: 20, y: 420 });
-        this.addChild(ranking_btn);
-        let ranking_btn_bg = eKit.createRect([0, 0, 120, 60], { beginFill: { color: 0x9988ff, alpha: 1 } }, { touchEnabled: true });
-        ranking_btn.addChild(ranking_btn_bg);
-        ranking_btn.addChild(eKit.createText('缓存排行榜', { width: 120, height: 60, size: 20, textAlign: 'center', verticalAlign: 'middle' }));
-        ranking_btn_bg.addEventListener(egret.TouchEvent.TOUCH_TAP, async () => {
-            // 获取缓存的世界排行榜，可用于分页显示
-            let ranking = Records.getRankings();
-            console.log(ranking);
-            console.log('done');
-        }, this);
-
 
         // 调用开放数据域获取好友排行榜
         let friend_ranking_btn = eKit.createSprite({ x: 20, y: 500 });
@@ -180,7 +143,7 @@ class Main extends egret.DisplayObjectContainer {
         friend_ranking_btn.addChild(friend_ranking_btn_bg);
         friend_ranking_btn.addChild(eKit.createText('好友排行榜', { width: 120, height: 60, size: 20, textAlign: 'center', verticalAlign: 'middle' }));
         friend_ranking_btn_bg.addEventListener(egret.TouchEvent.TOUCH_TAP, async () => {
-            let open_data:egret.Sprite = WxKit.linkOpenData({});
+            let open_data: egret.Sprite = WxKit.linkOpenData({});
             // this.addChild(open_data);
         }, this);
 
@@ -200,7 +163,17 @@ class Main extends egret.DisplayObjectContainer {
         }, this);
 
 
-
+        // 清空按钮
+        let particle_btn = eKit.createSprite({ x: 20, y: 660 });
+        this.addChild(particle_btn);
+        let particle_btn_bg = eKit.createRect([0, 0, 120, 60], { beginFill: { color: 0x9988ff, alpha: 1 } }, { touchEnabled: true });
+        particle_btn.addChild(particle_btn_bg);
+        particle_btn.addChild(eKit.createText('触发粒子', { width: 120, height: 60, size: 20, textAlign: 'center', verticalAlign: 'middle' }));
+        particle_btn_bg.addEventListener(egret.TouchEvent.TOUCH_TAP, async () => {
+            let system = new particle.GravityParticleSystem(RES.getRes('boom_png'),RES.getRes('boom_json'));
+            system.start(50);
+            this.addChild(system);
+        }, this);
 
         // 播放背景音乐
         Mp3.playBGM();

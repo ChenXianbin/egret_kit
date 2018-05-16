@@ -7,6 +7,10 @@ const PLATFORM: WxPlatform = new WxPlatform();
 
 class WxKit {
 
+    // private static code = '';
+    private static iv = '';
+    private static enctypecode = '';
+
     /**
      * 调用login完成getUserInfo版登陆操作
      */
@@ -14,25 +18,82 @@ class WxKit {
         let code = null;
         let userInfo = null;
         let result = null;
+
         await PLATFORM.login()
             .then((res: { code?}) => { code = res.code })
             .catch(err => { console.warn(err) });
+
         await PLATFORM.getUserInfo()
-            .then((res: { iv?, enctypecode?}) => { userInfo = JSON.parse(JSON.stringify(res)) })
+            .then(async (res: { iv?, enctypecode?}) => {
+                let userInfo = JSON.parse(JSON.stringify(res))
+                WxKit.iv = userInfo.iv;
+                WxKit.enctypecode = userInfo.encryptedData;
+                await PLATFORM.auth(code, userInfo.iv, userInfo.encryptedData)
+                    .then(res => {
+                        result = JSON.parse(JSON.stringify(res));
+                        Api.setToken(result.data.token);
+                        UserData.setUserData(result.data);
+                        Api.postEvent('open');
+                        console.log('login_success');
+                    })
+                    .catch(err => { console.warn(err) });
+
+                console.warn('get_user_info_success');
+                console.log(userInfo);
+
+            })
             .catch(async err => {
-                await WxKit.reAuth()
-                    .then((res: { iv?, encryptedData?}) => { userInfo = JSON.parse(JSON.stringify(res)) });
+                // if方法进入旧版getUserInfo对应的重授权弹窗
+                if (typeof wx.createUserInfoButton != 'function') {
+                    await WxKit.reAuth()
+                        .then(async (res: { iv?, encryptedData?}) => {
+                            userInfo = JSON.parse(JSON.stringify(res))
+                            await PLATFORM.auth(code, userInfo.iv, userInfo.encryptedData)
+                                .then(res => {
+                                    result = JSON.parse(JSON.stringify(res));
+                                    Api.setToken(result.data.token);
+                                    UserData.setUserData(result.data);
+                                    Api.postEvent('open');
+                                    console.log('login_success');
+                                })
+                                .catch(err => { console.warn(err) });
+                        });
+                    // else 方法进入新版调用 createUserInfoButton授权弹窗
+                } else {
+                    wx.hideLoading();
+                    var button = wx.createUserInfoButton(WxLoginButton.btnSkin)
+                    button.show();
+                    button.onTap(async (res) => {
+                        console.log(res);
+                        if (res.errMsg == 'getUserInfo:ok') {
+                            WxKit.iv = res.iv;
+                            WxKit.enctypecode = res.encryptedData;
+                            await PLATFORM.auth(code, WxKit.iv, WxKit.enctypecode)
+                                .then(res => {
+                                    result = JSON.parse(JSON.stringify(res));
+                                    Api.setToken(result.data.token);
+                                    UserData.setUserData(result.data);
+                                    Api.postEvent('open');
+                                    console.log('login_success');
+                                })
+                                .catch(err => { console.warn(err) });
+                            button.hide();
+                        } else {
+                            return false;
+                        }
+
+                    });
+                }
             })
 
-        await PLATFORM.auth(code, userInfo.iv, userInfo.encryptedData)
-            .then(res => { result = JSON.parse(JSON.stringify(res)); })
-            .catch(err => { console.warn(err) });
-        Api.setToken(result.data.token);
-        UserData.setUserData(result.data);
-        Api.postEvent('open');
-        console.log('login_success');
+
+
+
+
+
         return result;
     }
+
 
     /**
      * getUserInfo授权失败时重新弹出需授权弹窗,若拒绝则继续弹出
@@ -57,13 +118,13 @@ class WxKit {
     public static setDefaultShare() {
         wx.showShareMenu({
             withShareTicket: true,
-            success: void (0),
-            fail: void (0)
+            success: (res) => { console.log('setting_success'); console.log(res); },
+            fail: (err) => { console.warn(err) }
         });
         wx.onShareAppMessage(function () {
             return {
-                title: GameConfig.getShareTitle(),
-                imageUrl: GameConfig.getShareImg()
+                title: GameConfig.getShareTitle() || '',
+                imageUrl: GameConfig.getShareImg() || ''
             }
         });
 
@@ -155,8 +216,8 @@ class WxKit {
             week_record = res;
         });
         if (score >= week_record) {
-            await PLATFORM.setKVData({"score":score + '' , "date": Utils.getNowDate()})
-                .then(res =>{});
+            await PLATFORM.setKVData({ "score": score + '', "date": Utils.getNowDate() })
+                .then(res => { });
         }
         return true;
     }

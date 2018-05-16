@@ -6,7 +6,7 @@
 class GameConfig{
 
     // http通讯地址
-    private static basicUrl:string = "http://minigame.test-api.wxagame.com/game-plane/api";
+    private static basicUrl:string = "http://minigame.api.wxagame.com/game-plane/api";
     // 游戏自定义ID
     private static appCode:number = 1;
     // 游戏版本号

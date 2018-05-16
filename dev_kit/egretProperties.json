@@ -23,6 +23,14 @@
     },
     {
       "name": "promise"
+    },
+    {
+      "name": "particle",
+      "path": "libs/modules/particle"
+    },
+    {
+      "name": "physics",
+      "path": "libs/modules/physics"
     }
   ]
 }
