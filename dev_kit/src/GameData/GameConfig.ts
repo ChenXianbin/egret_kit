@@ -6,7 +6,7 @@
 class GameConfig{
 
     // http通讯地址
-    private static basicUrl:string = "http://minigame.api.wxagame.com/game-plane/api";
+    private static basicUrl:string = "";
     // 游戏自定义ID
     private static appCode:number = 1;
     // 游戏版本号
@@ -20,7 +20,7 @@ class GameConfig{
     // 游戏基本高
     private static stageHeight:number = 0;
     // 游戏KEY
-    private static key:string = '3&*q(Gzi5$!8*ae&h8y#45+!v';
+    private static key:string = '';
     // 游戏stage
     private static stage:egret.DisplayObjectContainer = null;
 
