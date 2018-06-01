@@ -34,6 +34,10 @@
 
 ### 2.基础 WebSocket 通讯（制定通讯格式）(todo)
 
+    1.基本websocket通讯封装（todo）
+    
+    2.基于websocket协议上的 mqtt 协议实现帧同步联机功能的封装（todo）
+
 ### 3.微信登陆流程封装（单句调用，拒绝授权时回调，封装记录token）（已完成）
 
     1. await 调用 WxKit.login(),阻塞进程，拒绝授权时重复提醒,将信息写入UserData内，返回 {code,iv,encryptedData}
@@ -138,5 +142,9 @@
     分享埋点于分享成功回调
 
 ### 18.标准化处理函数（日期，小数点等）(todo)
+
+### 19.广告模块（banner广告，视频激励广告模块）(todo)
+
+### 20.刘海屏机型库识别与对应UI适配判定（todo）
 
 
