@@ -851,7 +851,7 @@
                     _this.readyState = HAVE_NOTHING;
 
 
-                    _src.set(_this, '');
+                    _src.set(_this, url);
 
                     var innerAudioContext = wx.createInnerAudioContext();
 
@@ -919,8 +919,8 @@
                     value: function cloneNode() {
                         var newAudio = new Audio();
                         newAudio.loop = _innerAudioContext.get(this).loop;
-                        newAudio.autoplay = _innerAudioContext.get(this).loop;
-                        newAudio.src = this.src;
+                        newAudio.autoplay = _innerAudioContext.get(this).autoplay;
+                        newAudio.src = _src.get(this);
                         return newAudio;
                     }
                 }, {

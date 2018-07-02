@@ -38,8 +38,8 @@ r.prototype = e.prototype, t.prototype = new r();
 //////////////////////////////////////////////////////////////////////////////////////
 
 (function (egret) {
-    var wxapp;
-    (function (wxapp) {
+    var wxgame;
+    (function (wxgame) {
         /**
          * @private
          */
@@ -245,10 +245,10 @@ r.prototype = e.prototype, t.prototype = new r();
             };
             return WebFps;
         }(egret.DisplayObject));
-        wxapp.WebFps = WebFps;
-        __reflect(WebFps.prototype, "egret.wxapp.WebFps", ["egret.FPSDisplay", "egret.DisplayObject"]);
+        wxgame.WebFps = WebFps;
+        __reflect(WebFps.prototype, "egret.wxgame.WebFps", ["egret.FPSDisplay", "egret.DisplayObject"]);
         egret.FPSDisplay = WebFps;
-    })(wxapp = egret.wxapp || (egret.wxapp = {}));
+    })(wxgame = egret.wxgame || (egret.wxgame = {}));
 })(egret || (egret = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -287,13 +287,13 @@ if (window['HTMLVideoElement'] == undefined) {
 }
 
 (function (egret) {
-    var wxapp;
-    (function (wxapp) {
+    var wxgame;
+    (function (wxgame) {
         var className = "egret.BitmapData";
         egret.registerClass(HTMLImageElement, className);
         egret.registerClass(HTMLCanvasElement, className);
         egret.registerClass(HTMLVideoElement, className);
-    })(wxapp = egret.wxapp || (egret.wxapp = {}));
+    })(wxgame = egret.wxgame || (egret.wxgame = {}));
 })(egret || (egret = {}));
 (function (egret) {
     /**
@@ -339,8 +339,8 @@ if (window['HTMLVideoElement'] == undefined) {
 (function (egret) {
     var localStorage;
     (function (localStorage) {
-        var wxapp;
-        (function (wxapp) {
+        var wxgame;
+        (function (wxgame) {
             /**
              * @private
              *
@@ -386,7 +386,7 @@ if (window['HTMLVideoElement'] == undefined) {
             localStorage.setItem = setItem;
             localStorage.removeItem = removeItem;
             localStorage.clear = clear;
-        })(wxapp = localStorage.wxapp || (localStorage.wxapp = {}));
+        })(wxgame = localStorage.wxgame || (localStorage.wxgame = {}));
     })(localStorage = egret.localStorage || (egret.localStorage = {}));
 })(egret || (egret = {}));
 //////////////////////////////////////////////////////////////////////////////////////
@@ -419,8 +419,8 @@ if (window['HTMLVideoElement'] == undefined) {
 //////////////////////////////////////////////////////////////////////////////////////
 
 (function (egret) {
-    var wxapp;
-    (function (wxapp) {
+    var wxgame;
+    (function (wxgame) {
         /**
          * @private
          * @inheritDoc
@@ -467,7 +467,7 @@ if (window['HTMLVideoElement'] == undefined) {
                     audio.autoplay = !0;
                     audio.muted = true;
                 }
-                // audio.load();     wxapp没有此接口
+                // audio.load();     wxgame没有此接口
                 this.originAudio = audio;
                 if (HtmlSound.clearAudios[this.url]) {
                     delete HtmlSound.clearAudios[this.url];
@@ -508,7 +508,7 @@ if (window['HTMLVideoElement'] == undefined) {
                     //audio.load();
                 }
                 audio.autoplay = true;
-                var channel = new wxapp.HtmlSoundChannel(audio);
+                var channel = new wxgame.HtmlSoundChannel(audio);
                 channel.$url = this.url;
                 channel.$loops = loops;
                 channel.$startTime = startTime;
@@ -583,9 +583,9 @@ if (window['HTMLVideoElement'] == undefined) {
             HtmlSound.clearAudios = {};
             return HtmlSound;
         }(egret.EventDispatcher));
-        wxapp.HtmlSound = HtmlSound;
-        __reflect(HtmlSound.prototype, "egret.wxapp.HtmlSound", ["egret.Sound"]);
-    })(wxapp = egret.wxapp || (egret.wxapp = {}));
+        wxgame.HtmlSound = HtmlSound;
+        __reflect(HtmlSound.prototype, "egret.wxgame.HtmlSound", ["egret.Sound"]);
+    })(wxgame = egret.wxgame || (egret.wxgame = {}));
 })(egret || (egret = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -617,8 +617,8 @@ if (window['HTMLVideoElement'] == undefined) {
 //////////////////////////////////////////////////////////////////////////////////////
 
 (function (egret) {
-    var wxapp;
-    (function (wxapp) {
+    var wxgame;
+    (function (wxgame) {
         /**
          * @private
          * @inheritDoc
@@ -640,17 +640,6 @@ if (window['HTMLVideoElement'] == undefined) {
                 _this.audio = null;
                 //声音是否已经播放完成
                 _this.isStopped = false;
-                _this.canPlay = function () {
-                    _this.audio.removeEventListener("canplay", _this.canPlay);
-                    try {
-                        _this.audio.currentTime = _this.$startTime;
-                    }
-                    catch (e) {
-                    }
-                    finally {
-                        _this.audio.play();
-                    }
-                };
                 /**
                  * @private
                  */
@@ -680,16 +669,9 @@ if (window['HTMLVideoElement'] == undefined) {
                     egret.$error(1036);
                     return;
                 }
-                try {
-                    //this.audio.pause();
-                    this.audio.volume = this._volume;
-                    this.audio.currentTime = this.$startTime;
-                }
-                catch (e) {
-                    this.audio.addEventListener("canplay", this.canPlay);
-                    return;
-                }
                 this.audio.play();
+                this.audio.volume = this._volume;
+                this.audio.currentTime = this.$startTime;
             };
             /**
              * @private
@@ -711,7 +693,7 @@ if (window['HTMLVideoElement'] == undefined) {
                 //延迟一定时间再停止，规避chrome报错
                 window.setTimeout(function () {
                     audio.pause();
-                    wxapp.HtmlSound.$recycle(url, audio);
+                    wxgame.HtmlSound.$recycle(url, audio);
                 }, 200);
             };
             Object.defineProperty(HtmlSoundChannel.prototype, "volume", {
@@ -753,9 +735,9 @@ if (window['HTMLVideoElement'] == undefined) {
             });
             return HtmlSoundChannel;
         }(egret.EventDispatcher));
-        wxapp.HtmlSoundChannel = HtmlSoundChannel;
-        __reflect(HtmlSoundChannel.prototype, "egret.wxapp.HtmlSoundChannel", ["egret.SoundChannel", "egret.IEventDispatcher"]);
-    })(wxapp = egret.wxapp || (egret.wxapp = {}));
+        wxgame.HtmlSoundChannel = HtmlSoundChannel;
+        __reflect(HtmlSoundChannel.prototype, "egret.wxgame.HtmlSoundChannel", ["egret.SoundChannel", "egret.IEventDispatcher"]);
+    })(wxgame = egret.wxgame || (egret.wxgame = {}));
 })(egret || (egret = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -787,8 +769,8 @@ if (window['HTMLVideoElement'] == undefined) {
 //////////////////////////////////////////////////////////////////////////////////////
 
 (function (egret) {
-    var wxapp;
-    (function (wxapp) {
+    var wxgame;
+    (function (wxgame) {
         /**
          * @private
          */
@@ -834,8 +816,8 @@ if (window['HTMLVideoElement'] == undefined) {
             WebAudioDecode.isDecoding = false;
             return WebAudioDecode;
         }());
-        wxapp.WebAudioDecode = WebAudioDecode;
-        __reflect(WebAudioDecode.prototype, "egret.wxapp.WebAudioDecode");
+        wxgame.WebAudioDecode = WebAudioDecode;
+        __reflect(WebAudioDecode.prototype, "egret.wxgame.WebAudioDecode");
         /**
          * @private
          * @inheritDoc
@@ -913,7 +895,7 @@ if (window['HTMLVideoElement'] == undefined) {
                 if (true && this.loaded == false) {
                     egret.$error(1049);
                 }
-                var channel = new wxapp.WebAudioSoundChannel();
+                var channel = new wxgame.WebAudioSoundChannel();
                 channel.$url = this.url;
                 channel.$loops = loops;
                 channel.$audioBuffer = this.audioBuffer;
@@ -955,9 +937,9 @@ if (window['HTMLVideoElement'] == undefined) {
             WebAudioSound.EFFECT = "effect";
             return WebAudioSound;
         }(egret.EventDispatcher));
-        wxapp.WebAudioSound = WebAudioSound;
-        __reflect(WebAudioSound.prototype, "egret.wxapp.WebAudioSound", ["egret.Sound"]);
-    })(wxapp = egret.wxapp || (egret.wxapp = {}));
+        wxgame.WebAudioSound = WebAudioSound;
+        __reflect(WebAudioSound.prototype, "egret.wxgame.WebAudioSound", ["egret.Sound"]);
+    })(wxgame = egret.wxgame || (egret.wxgame = {}));
 })(egret || (egret = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -989,8 +971,8 @@ if (window['HTMLVideoElement'] == undefined) {
 //////////////////////////////////////////////////////////////////////////////////////
 
 (function (egret) {
-    var wxapp;
-    (function (wxapp) {
+    var wxgame;
+    (function (wxgame) {
         /**
          * @private
          * @inheritDoc
@@ -1013,7 +995,7 @@ if (window['HTMLVideoElement'] == undefined) {
                 /**
                  * @private
                  */
-                _this.context = wxapp.WebAudioDecode.ctx;
+                _this.context = wxgame.WebAudioDecode.ctx;
                 //声音是否已经播放完成
                 _this.isStopped = false;
                 /**
@@ -1130,9 +1112,9 @@ if (window['HTMLVideoElement'] == undefined) {
             });
             return WebAudioSoundChannel;
         }(egret.EventDispatcher));
-        wxapp.WebAudioSoundChannel = WebAudioSoundChannel;
-        __reflect(WebAudioSoundChannel.prototype, "egret.wxapp.WebAudioSoundChannel", ["egret.SoundChannel", "egret.IEventDispatcher"]);
-    })(wxapp = egret.wxapp || (egret.wxapp = {}));
+        wxgame.WebAudioSoundChannel = WebAudioSoundChannel;
+        __reflect(WebAudioSoundChannel.prototype, "egret.wxgame.WebAudioSoundChannel", ["egret.SoundChannel", "egret.IEventDispatcher"]);
+    })(wxgame = egret.wxgame || (egret.wxgame = {}));
 })(egret || (egret = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -1164,8 +1146,8 @@ if (window['HTMLVideoElement'] == undefined) {
 //////////////////////////////////////////////////////////////////////////////////////
 
 (function (egret) {
-    var wxapp;
-    (function (wxapp) {
+    var wxgame;
+    (function (wxgame) {
         /**
          * @private
          * @inheritDoc
@@ -1375,9 +1357,9 @@ if (window['HTMLVideoElement'] == undefined) {
             WebVideo.prototype.goFullscreen = function () {
                 var video = this.video;
                 var fullscreenType;
-                fullscreenType = wxapp.getPrefixStyleName('requestFullscreen', video);
+                fullscreenType = wxgame.getPrefixStyleName('requestFullscreen', video);
                 if (!video[fullscreenType]) {
-                    fullscreenType = wxapp.getPrefixStyleName('requestFullScreen', video);
+                    fullscreenType = wxgame.getPrefixStyleName('requestFullScreen', video);
                     if (!video[fullscreenType]) {
                         return true;
                     }
@@ -1674,10 +1656,10 @@ if (window['HTMLVideoElement'] == undefined) {
             });
             return WebVideo;
         }(egret.DisplayObject));
-        wxapp.WebVideo = WebVideo;
-        __reflect(WebVideo.prototype, "egret.wxapp.WebVideo", ["egret.Video", "egret.DisplayObject"]);
+        wxgame.WebVideo = WebVideo;
+        __reflect(WebVideo.prototype, "egret.wxgame.WebVideo", ["egret.Video", "egret.DisplayObject"]);
         egret.Video = WebVideo;
-    })(wxapp = egret.wxapp || (egret.wxapp = {}));
+    })(wxgame = egret.wxgame || (egret.wxgame = {}));
 })(egret || (egret = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -1709,8 +1691,8 @@ if (window['HTMLVideoElement'] == undefined) {
 //////////////////////////////////////////////////////////////////////////////////////
 
 (function (egret) {
-    var wxapp;
-    (function (wxapp) {
+    var wxgame;
+    (function (wxgame) {
         /**
          * @private
          */
@@ -1737,28 +1719,6 @@ if (window['HTMLVideoElement'] == undefined) {
                     if (this._response) {
                         return this._response;
                     }
-                    if (!this._xhr) {
-                        return null;
-                    }
-                    if (this._xhr.response != undefined) {
-                        return this._xhr.response;
-                    }
-                    if (this._responseType == "text") {
-                        return this._xhr.responseText;
-                    }
-                    if (this._responseType == "arraybuffer" && /msie 9.0/i.test(navigator.userAgent)) {
-                        var w = window;
-                        return w.convertResponseBodyToText(this._xhr["responseBody"]);
-                    }
-                    if (this._responseType == "document") {
-                        return this._xhr.responseXML;
-                    }
-                    /*if (this._xhr.responseXML) {
-                        return this._xhr.responseXML;
-                    }
-                    if (this._xhr.responseText != undefined) {
-                        return this._xhr.responseText;
-                    }*/
                     return null;
                 },
                 enumerable: true,
@@ -1802,14 +1762,6 @@ if (window['HTMLVideoElement'] == undefined) {
                 if (method === void 0) { method = "GET"; }
                 this._url = url;
                 this._method = method;
-                if (this._xhr) {
-                    this._xhr.abort();
-                    this._xhr = null;
-                }
-                this._xhr = new XMLHttpRequest();
-                this._xhr.onreadystatechange = this.onReadyStateChange.bind(this);
-                this._xhr.onprogress = this.updateProgress.bind(this);
-                this._xhr.open(this._method, this._url, true);
             };
             WebHttpRequest.prototype.readFileAsync = function () {
                 var self = this;
@@ -1859,18 +1811,36 @@ if (window['HTMLVideoElement'] == undefined) {
                     this.readFileAsync();
                 }
                 else {
-                    if (this._responseType != null) {
-                        this._xhr.responseType = this._responseType;
-                    }
-                    if (this._withCredentials != null) {
-                        this._xhr.withCredentials = this._withCredentials;
-                    }
-                    if (this.headerObj) {
-                        for (var key in this.headerObj) {
-                            this._xhr.setRequestHeader(key, this.headerObj[key]);
+                    var self_1 = this;
+                    wx.request({
+                        data: data,
+                        url: this._url,
+                        method: this._method,
+                        header: this.headerObj,
+                        responseType: this.responseType,
+                        success: function success(_ref) {
+                            var data = _ref.data, statusCode = _ref.statusCode, header = _ref.header;
+                            if (statusCode != 200) {
+                                self_1.dispatchEventWith(egret.IOErrorEvent.IO_ERROR);
+                                return;
+                            }
+                            if (typeof data !== 'string' && !(data instanceof ArrayBuffer)) {
+                                try {
+                                    data = JSON.stringify(data);
+                                }
+                                catch (e) {
+                                    data = data;
+                                }
+                            }
+                            self_1._responseHeader = header;
+                            self_1._response = data;
+                            self_1.dispatchEventWith(egret.Event.COMPLETE);
+                        },
+                        fail: function fail(_ref2) {
+                            // var errMsg = _ref2.errMsg;
+                            self_1.dispatchEventWith(egret.IOErrorEvent.IO_ERROR);
                         }
-                    }
-                    this._xhr.send(data);
+                    });
                 }
             };
             /**
@@ -1886,20 +1856,19 @@ if (window['HTMLVideoElement'] == undefined) {
              * 如果请求已经被发送,则立刻中止请求.
              */
             WebHttpRequest.prototype.abort = function () {
-                if (this._xhr) {
-                    this._xhr.abort();
-                }
             };
             /**
              * @private
              * 返回所有响应头信息(响应头名和值), 如果响应头还没接受,则返回"".
              */
             WebHttpRequest.prototype.getAllResponseHeaders = function () {
-                if (!this._xhr) {
+                var responseHeader = this._responseHeader;
+                if (!responseHeader) {
                     return null;
                 }
-                var result = this._xhr.getAllResponseHeaders();
-                return result ? result : "";
+                return Object.keys(responseHeader).map(function (header) {
+                    return header + ': ' + responseHeader[header];
+                }).join('\n');
             };
             /**
              * @private
@@ -1919,31 +1888,11 @@ if (window['HTMLVideoElement'] == undefined) {
              * @param header 要返回的响应头名称
              */
             WebHttpRequest.prototype.getResponseHeader = function (header) {
-                if (!this._xhr) {
+                if (!this._responseHeader) {
                     return null;
                 }
-                var result = this._xhr.getResponseHeader(header);
+                var result = this._responseHeader[header];
                 return result ? result : "";
-            };
-            /**
-             * @private
-             */
-            WebHttpRequest.prototype.onReadyStateChange = function () {
-                var xhr = this._xhr;
-                if (xhr.readyState == 4) {
-                    var ioError = (xhr.status >= 400 || xhr.status == 0);
-                    var url = this._url;
-                    var self_1 = this;
-                    if (ioError) {
-                        if (true && !self_1.hasEventListener(egret.IOErrorEvent.IO_ERROR)) {
-                            egret.$error(1011, url);
-                        }
-                        self_1.dispatchEventWith(egret.IOErrorEvent.IO_ERROR);
-                    }
-                    else {
-                        self_1.dispatchEventWith(egret.Event.COMPLETE);
-                    }
-                }
             };
             /**
              * @private
@@ -1955,10 +1904,10 @@ if (window['HTMLVideoElement'] == undefined) {
             };
             return WebHttpRequest;
         }(egret.EventDispatcher));
-        wxapp.WebHttpRequest = WebHttpRequest;
-        __reflect(WebHttpRequest.prototype, "egret.wxapp.WebHttpRequest", ["egret.HttpRequest"]);
+        wxgame.WebHttpRequest = WebHttpRequest;
+        __reflect(WebHttpRequest.prototype, "egret.wxgame.WebHttpRequest", ["egret.HttpRequest"]);
         egret.HttpRequest = WebHttpRequest;
-    })(wxapp = egret.wxapp || (egret.wxapp = {}));
+    })(wxgame = egret.wxgame || (egret.wxgame = {}));
 })(egret || (egret = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -1990,8 +1939,8 @@ if (window['HTMLVideoElement'] == undefined) {
 //////////////////////////////////////////////////////////////////////////////////////
 
 (function (egret) {
-    var wxapp;
-    (function (wxapp) {
+    var wxgame;
+    (function (wxgame) {
         var winURL = window["URL"] || window["webkitURL"];
         /**
          * @private
@@ -2081,8 +2030,13 @@ if (window['HTMLVideoElement'] == undefined) {
                     return;
                 }
                 this.data = new egret.BitmapData(image);
+                if (wxgame.preUploadTexture && egret.Capabilities.renderMode == "webgl") {
+                    wxgame.WebGLRenderContext.getInstance(null, null).getWebGLTexture(this.data);
+                }
                 var self = this;
-                self.dispatchEventWith(egret.Event.COMPLETE);
+                window.setTimeout(function () {
+                    self.dispatchEventWith(egret.Event.COMPLETE);
+                }, 0);
             };
             /**
              * @private
@@ -2096,10 +2050,12 @@ if (window['HTMLVideoElement'] == undefined) {
             };
             WebImageLoader.prototype.dispatchIOError = function (url) {
                 var self = this;
-                if (true && !self.hasEventListener(egret.IOErrorEvent.IO_ERROR)) {
-                    egret.$error(1011, url);
-                }
-                self.dispatchEventWith(egret.IOErrorEvent.IO_ERROR);
+                window.setTimeout(function () {
+                    if (true && !self.hasEventListener(egret.IOErrorEvent.IO_ERROR)) {
+                        egret.$error(1011, url);
+                    }
+                    self.dispatchEventWith(egret.IOErrorEvent.IO_ERROR);
+                }, 0);
             };
             /**
              * @private
@@ -2122,10 +2078,10 @@ if (window['HTMLVideoElement'] == undefined) {
             WebImageLoader.crossOrigin = null;
             return WebImageLoader;
         }(egret.EventDispatcher));
-        wxapp.WebImageLoader = WebImageLoader;
-        __reflect(WebImageLoader.prototype, "egret.wxapp.WebImageLoader", ["egret.ImageLoader"]);
+        wxgame.WebImageLoader = WebImageLoader;
+        __reflect(WebImageLoader.prototype, "egret.wxgame.WebImageLoader", ["egret.ImageLoader"]);
         egret.ImageLoader = WebImageLoader;
-    })(wxapp = egret.wxapp || (egret.wxapp = {}));
+    })(wxgame = egret.wxgame || (egret.wxgame = {}));
 })(egret || (egret = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -2157,8 +2113,8 @@ if (window['HTMLVideoElement'] == undefined) {
 //////////////////////////////////////////////////////////////////////////////////////
 
 (function (egret) {
-    var wxapp;
-    (function (wxapp) {
+    var wxgame;
+    (function (wxgame) {
         /**
          * @classdesc
          * @extends egret.StageText
@@ -2278,10 +2234,10 @@ if (window['HTMLVideoElement'] == undefined) {
             };
             return HTML5StageText;
         }(egret.EventDispatcher));
-        wxapp.HTML5StageText = HTML5StageText;
-        __reflect(HTML5StageText.prototype, "egret.wxapp.HTML5StageText", ["egret.StageText"]);
+        wxgame.HTML5StageText = HTML5StageText;
+        __reflect(HTML5StageText.prototype, "egret.wxgame.HTML5StageText", ["egret.StageText"]);
         egret.StageText = HTML5StageText;
-    })(wxapp = egret.wxapp || (egret.wxapp = {}));
+    })(wxgame = egret.wxgame || (egret.wxgame = {}));
 })(egret || (egret = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -2313,8 +2269,8 @@ if (window['HTMLVideoElement'] == undefined) {
 //////////////////////////////////////////////////////////////////////////////////////
 
 (function (egret) {
-    var wxapp;
-    (function (wxapp) {
+    var wxgame;
+    (function (wxgame) {
         /**
          * @private
          */
@@ -2354,7 +2310,7 @@ if (window['HTMLVideoElement'] == undefined) {
             context.textBaseline = "middle";
         }
         egret.sys.measureText = measureText;
-    })(wxapp = egret.wxapp || (egret.wxapp = {}));
+    })(wxgame = egret.wxgame || (egret.wxgame = {}));
 })(egret || (egret = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -2386,8 +2342,8 @@ if (window['HTMLVideoElement'] == undefined) {
 //////////////////////////////////////////////////////////////////////////////////////
 
 (function (egret) {
-    var wxapp;
-    (function (wxapp) {
+    var wxgame;
+    (function (wxgame) {
         /**
          * 创建一个canvas。
          */
@@ -2431,7 +2387,7 @@ if (window['HTMLVideoElement'] == undefined) {
         var CanvasRenderBuffer = (function () {
             function CanvasRenderBuffer(width, height, root) {
                 if (root) {
-                    if (egret.wxgame.isSubContext) {
+                    if (wxgame.isSubContext) {
                         this.surface = window["sharedCanvas"];
                     }
                     else {
@@ -2477,7 +2433,7 @@ if (window['HTMLVideoElement'] == undefined) {
              */
             CanvasRenderBuffer.prototype.resize = function (width, height, useMaxSize) {
                 var surface = this.surface;
-                if (egret.wxgame.isSubContext) {
+                if (wxgame.isSubContext) {
                     return;
                 }
                 if (useMaxSize) {
@@ -2549,9 +2505,9 @@ if (window['HTMLVideoElement'] == undefined) {
             };
             return CanvasRenderBuffer;
         }());
-        wxapp.CanvasRenderBuffer = CanvasRenderBuffer;
-        __reflect(CanvasRenderBuffer.prototype, "egret.wxapp.CanvasRenderBuffer", ["egret.sys.RenderBuffer"]);
-    })(wxapp = egret.wxapp || (egret.wxapp = {}));
+        wxgame.CanvasRenderBuffer = CanvasRenderBuffer;
+        __reflect(CanvasRenderBuffer.prototype, "egret.wxgame.CanvasRenderBuffer", ["egret.sys.RenderBuffer"]);
+    })(wxgame = egret.wxgame || (egret.wxgame = {}));
 })(egret || (egret = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -2583,8 +2539,8 @@ if (window['HTMLVideoElement'] == undefined) {
 //////////////////////////////////////////////////////////////////////////////////////
 
 (function (egret) {
-    var wxapp;
-    (function (wxapp) {
+    var wxgame;
+    (function (wxgame) {
         /**
          * @private
          */
@@ -2639,7 +2595,7 @@ if (window['HTMLVideoElement'] == undefined) {
              */
             WebTouchHandler.prototype.addTouchListener = function () {
                 var self = this;
-                if (egret.wxgame.isSubContext) {
+                if (wxgame.isSubContext) {
                     wx.onTouchStart(function (event) {
                         var l = event.changedTouches.length;
                         for (var i = 0; i < l; i++) {
@@ -2709,7 +2665,7 @@ if (window['HTMLVideoElement'] == undefined) {
              * @private
              */
             WebTouchHandler.prototype.getLocation = function (event) {
-                //   event.identifier = +event.identifier || 0;        wxapp 内核该属性只读
+                //   event.identifier = +event.identifier || 0;        wxgame 内核该属性只读
                 var doc = document.documentElement;
                 var box = this.canvas.getBoundingClientRect();
                 var left = box.left;
@@ -2748,9 +2704,9 @@ if (window['HTMLVideoElement'] == undefined) {
             };
             return WebTouchHandler;
         }(egret.HashObject));
-        wxapp.WebTouchHandler = WebTouchHandler;
-        __reflect(WebTouchHandler.prototype, "egret.wxapp.WebTouchHandler");
-    })(wxapp = egret.wxapp || (egret.wxapp = {}));
+        wxgame.WebTouchHandler = WebTouchHandler;
+        __reflect(WebTouchHandler.prototype, "egret.wxgame.WebTouchHandler");
+    })(wxgame = egret.wxgame || (egret.wxgame = {}));
 })(egret || (egret = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -2782,12 +2738,12 @@ if (window['HTMLVideoElement'] == undefined) {
 //////////////////////////////////////////////////////////////////////////////////////
 
 (function (egret) {
-    var wxapp;
-    (function (wxapp) {
+    var wxgame;
+    (function (wxgame) {
         /**
          * @private
          */
-        wxapp.WebLifeCycleHandler = function (context) {
+        wxgame.WebLifeCycleHandler = function (context) {
             var handleVisibilityChange = function () {
                 if (!document[hidden]) {
                     context.resume();
@@ -2848,7 +2804,7 @@ if (window['HTMLVideoElement'] == undefined) {
                 window["browser"] = browser;
             }
         };
-    })(wxapp = egret.wxapp || (egret.wxapp = {}));
+    })(wxgame = egret.wxgame || (egret.wxgame = {}));
 })(egret || (egret = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -2880,8 +2836,8 @@ if (window['HTMLVideoElement'] == undefined) {
 //////////////////////////////////////////////////////////////////////////////////////
 
 (function (egret) {
-    var wxapp;
-    (function (wxapp) {
+    var wxgame;
+    (function (wxgame) {
         /**
          * @private
          */
@@ -2898,8 +2854,8 @@ if (window['HTMLVideoElement'] == undefined) {
             AudioType.HTML5_AUDIO = 3;
             return AudioType;
         }());
-        wxapp.AudioType = AudioType;
-        __reflect(AudioType.prototype, "egret.wxapp.AudioType");
+        wxgame.AudioType = AudioType;
+        __reflect(AudioType.prototype, "egret.wxgame.AudioType");
         /**
          * html5兼容性配置
          * @private
@@ -2924,7 +2880,7 @@ if (window['HTMLVideoElement'] == undefined) {
                 if (canUseWebAudio) {
                     try {
                         //防止某些chrome版本创建异常问题
-                        wxapp.WebAudioDecode.ctx = new (window["AudioContext"] || window["webkitAudioContext"] || window["mozAudioContext"])();
+                        wxgame.WebAudioDecode.ctx = new (window["AudioContext"] || window["webkitAudioContext"] || window["mozAudioContext"])();
                     }
                     catch (e) {
                         canUseWebAudio = false;
@@ -2967,10 +2923,10 @@ if (window['HTMLVideoElement'] == undefined) {
                 Html5Capatibility._audioType = type;
                 switch (type) {
                     case AudioType.WEB_AUDIO:
-                        Html5Capatibility._AudioClass = egret.wxapp.WebAudioSound;
+                        Html5Capatibility._AudioClass = wxgame.WebAudioSound;
                         break;
                     case AudioType.HTML5_AUDIO:
-                        Html5Capatibility._AudioClass = egret.wxapp.HtmlSound;
+                        Html5Capatibility._AudioClass = wxgame.HtmlSound;
                         break;
                 }
             };
@@ -2993,8 +2949,8 @@ if (window['HTMLVideoElement'] == undefined) {
             Html5Capatibility.ua = "";
             return Html5Capatibility;
         }(egret.HashObject));
-        wxapp.Html5Capatibility = Html5Capatibility;
-        __reflect(Html5Capatibility.prototype, "egret.wxapp.Html5Capatibility");
+        wxgame.Html5Capatibility = Html5Capatibility;
+        __reflect(Html5Capatibility.prototype, "egret.wxgame.Html5Capatibility");
         /**
          * @private
          */
@@ -3019,7 +2975,7 @@ if (window['HTMLVideoElement'] == undefined) {
             }
             return header + name.charAt(0).toUpperCase() + name.substring(1, name.length);
         }
-        wxapp.getPrefixStyleName = getPrefixStyleName;
+        wxgame.getPrefixStyleName = getPrefixStyleName;
         /**
          * @private
          */
@@ -3037,8 +2993,8 @@ if (window['HTMLVideoElement'] == undefined) {
             }
             return "";
         }
-        wxapp.getPrefix = getPrefix;
-    })(wxapp = egret.wxapp || (egret.wxapp = {}));
+        wxgame.getPrefix = getPrefix;
+    })(wxgame = egret.wxgame || (egret.wxgame = {}));
 })(egret || (egret = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -3075,16 +3031,20 @@ if (window['HTMLVideoElement'] == undefined) {
         /**
          * 微信小游戏支持库版本号
          */
-        wxgame.version = "1.0.14";
+        wxgame.version = "1.1.2";
         /**
          * 运行环境是否为子域
          */
         wxgame.isSubContext = false;
+        /**
+         * 解决提交纹理异常临时方案
+         */
+        wxgame.preUploadTexture = false;
     })(wxgame = egret.wxgame || (egret.wxgame = {}));
 })(egret || (egret = {}));
 (function (egret) {
-    var wxapp;
-    (function (wxapp) {
+    var wxgame;
+    (function (wxgame) {
         /**
          * @private
          * 刷新所有Egret播放器的显示区域尺寸。仅当使用外部JavaScript代码动态修改了Egret容器大小时，需要手动调用此方法刷新显示区域。
@@ -3115,17 +3075,17 @@ if (window['HTMLVideoElement'] == undefined) {
             if (!options) {
                 options = {};
             }
-            wxapp.Html5Capatibility._audioType = options.audioType;
-            wxapp.Html5Capatibility.$init();
+            wxgame.Html5Capatibility._audioType = options.audioType;
+            wxgame.Html5Capatibility.$init();
             // WebGL上下文参数自定义
             if (options.renderMode == "webgl") {
                 // WebGL抗锯齿默认关闭，提升PC及某些平台性能
                 var antialias = options.antialias;
-                wxapp.WebGLRenderContext.antialias = !!antialias;
+                wxgame.WebGLRenderContext.antialias = !!antialias;
                 // WebGLRenderContext.antialias = (typeof antialias == undefined) ? true : antialias;
             }
             egret.Capabilities["runtimeType" + ""] = egret.RuntimeType.WXGAME;
-            egret.sys.CanvasRenderBuffer = wxapp.CanvasRenderBuffer;
+            egret.sys.CanvasRenderBuffer = wxgame.CanvasRenderBuffer;
             setRenderMode(options.renderMode);
             var canvasScaleFactor;
             if (options.canvasScaleFactor) {
@@ -3162,7 +3122,7 @@ if (window['HTMLVideoElement'] == undefined) {
             //     container["egret-player"] = player;
             // }
             var container = {};
-            var player = new wxapp.WebPlayer(container, options);
+            var player = new wxgame.WebPlayer(container, options);
             window['player'] = player;
             window.addEventListener("resize", function () {
                 if (isNaN(resizeTimer)) {
@@ -3177,18 +3137,18 @@ if (window['HTMLVideoElement'] == undefined) {
         function setRenderMode(renderMode) {
             if (renderMode === "webgl") {
                 egret.Capabilities["renderMode" + ""] = "webgl";
-                egret.sys.RenderBuffer = wxapp.WebGLRenderBuffer;
-                egret.sys.systemRenderer = new wxapp.WebGLRenderer();
+                egret.sys.RenderBuffer = wxgame.WebGLRenderBuffer;
+                egret.sys.systemRenderer = new wxgame.WebGLRenderer();
                 egret.sys.canvasRenderer = new egret.CanvasRenderer();
-                egret.sys.customHitTestBuffer = new wxapp.WebGLRenderBuffer(3, 3);
-                egret.sys.canvasHitTestBuffer = new wxapp.CanvasRenderBuffer(3, 3);
+                egret.sys.customHitTestBuffer = new wxgame.WebGLRenderBuffer(3, 3);
+                egret.sys.canvasHitTestBuffer = new wxgame.CanvasRenderBuffer(3, 3);
             }
             else {
                 egret.Capabilities["renderMode" + ""] = "canvas";
-                egret.sys.RenderBuffer = wxapp.CanvasRenderBuffer;
+                egret.sys.RenderBuffer = wxgame.CanvasRenderBuffer;
                 egret.sys.systemRenderer = new egret.CanvasRenderer();
                 egret.sys.canvasRenderer = egret.sys.systemRenderer;
-                egret.sys.customHitTestBuffer = new wxapp.CanvasRenderBuffer(3, 3);
+                egret.sys.customHitTestBuffer = new wxgame.CanvasRenderBuffer(3, 3);
                 egret.sys.canvasHitTestBuffer = egret.sys.customHitTestBuffer;
             }
         }
@@ -3213,11 +3173,6 @@ if (window['HTMLVideoElement'] == undefined) {
                 requestAnimationFrame(onTick);
             }
         }
-        //覆盖原生的isNaN()方法实现，在不同浏览器上有2~10倍性能提升。
-        window["isNaN"] = function (value) {
-            value = +value;
-            return value !== value;
-        };
         egret.runEgret = runEgret;
         egret.updateAllScreens = updateAllScreens;
         var resizeTimer = NaN;
@@ -3225,7 +3180,7 @@ if (window['HTMLVideoElement'] == undefined) {
             resizeTimer = NaN;
             egret.updateAllScreens();
         }
-    })(wxapp = egret.wxapp || (egret.wxapp = {}));
+    })(wxgame = egret.wxgame || (egret.wxgame = {}));
 })(egret || (egret = {}));
 if (true) {
     var language = navigator.language || navigator["browserLanguage"] || "en_US";
@@ -3263,8 +3218,8 @@ if (true) {
 //////////////////////////////////////////////////////////////////////////////////////
 
 (function (egret) {
-    var wxapp;
-    (function (wxapp) {
+    var wxgame;
+    (function (wxgame) {
         /**
          * @private
          */
@@ -3343,10 +3298,10 @@ if (true) {
             };
             return WebCapability;
         }());
-        wxapp.WebCapability = WebCapability;
-        __reflect(WebCapability.prototype, "egret.wxapp.WebCapability");
+        wxgame.WebCapability = WebCapability;
+        __reflect(WebCapability.prototype, "egret.wxgame.WebCapability");
         WebCapability.detect();
-    })(wxapp = egret.wxapp || (egret.wxapp = {}));
+    })(wxgame = egret.wxgame || (egret.wxgame = {}));
 })(egret || (egret = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -3378,8 +3333,8 @@ if (true) {
 //////////////////////////////////////////////////////////////////////////////////////
 
 (function (egret) {
-    var wxapp;
-    (function (wxapp) {
+    var wxgame;
+    (function (wxgame) {
         /**
          * @private
          */
@@ -3402,17 +3357,17 @@ if (true) {
             };
             return WebExternalInterface;
         }());
-        wxapp.WebExternalInterface = WebExternalInterface;
-        __reflect(WebExternalInterface.prototype, "egret.wxapp.WebExternalInterface", ["egret.ExternalInterface"]);
+        wxgame.WebExternalInterface = WebExternalInterface;
+        __reflect(WebExternalInterface.prototype, "egret.wxgame.WebExternalInterface", ["egret.ExternalInterface"]);
         var ua = navigator.userAgent.toLowerCase();
         if (ua.indexOf("egretnative") < 0) {
             egret.ExternalInterface = WebExternalInterface;
         }
-    })(wxapp = egret.wxapp || (egret.wxapp = {}));
+    })(wxgame = egret.wxgame || (egret.wxgame = {}));
 })(egret || (egret = {}));
 (function (egret) {
-    var wxapp;
-    (function (wxapp) {
+    var wxgame;
+    (function (wxgame) {
         var callBackDic = {};
         /**
          * @private
@@ -3431,8 +3386,8 @@ if (true) {
             };
             return NativeExternalInterface;
         }());
-        wxapp.NativeExternalInterface = NativeExternalInterface;
-        __reflect(NativeExternalInterface.prototype, "egret.wxapp.NativeExternalInterface", ["egret.ExternalInterface"]);
+        wxgame.NativeExternalInterface = NativeExternalInterface;
+        __reflect(NativeExternalInterface.prototype, "egret.wxgame.NativeExternalInterface", ["egret.ExternalInterface"]);
         /**
          * @private
          * @param info
@@ -3454,7 +3409,7 @@ if (true) {
             egret.ExternalInterface = NativeExternalInterface;
             egret_native.receivedPluginInfo = onReceivedPluginInfo;
         }
-    })(wxapp = egret.wxapp || (egret.wxapp = {}));
+    })(wxgame = egret.wxgame || (egret.wxgame = {}));
 })(egret || (egret = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -3486,8 +3441,8 @@ if (true) {
 //////////////////////////////////////////////////////////////////////////////////////
 
 (function (egret) {
-    var wxapp;
-    (function (wxapp) {
+    var wxgame;
+    (function (wxgame) {
         /**
          * @private
          */
@@ -3495,9 +3450,9 @@ if (true) {
             var launchOptions = wx.getLaunchOptionsSync();
             return launchOptions.query[key] || launchOptions[key];
         }
-        wxapp.getOption = getOption;
+        wxgame.getOption = getOption;
         egret.getOption = getOption;
-    })(wxapp = egret.wxapp || (egret.wxapp = {}));
+    })(wxgame = egret.wxgame || (egret.wxgame = {}));
 })(egret || (egret = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -3529,8 +3484,8 @@ if (true) {
 //////////////////////////////////////////////////////////////////////////////////////
 
 (function (egret) {
-    var wxapp;
-    (function (wxapp) {
+    var wxgame;
+    (function (wxgame) {
         /**
          * @private
          */
@@ -3554,10 +3509,10 @@ if (true) {
                 var buffer = new egret.sys.RenderBuffer(undefined, undefined, true);
                 var canvas = buffer.surface;
                 this.attachCanvas(container, canvas);
-                var webTouch = new wxapp.WebTouchHandler(stage, canvas);
+                var webTouch = new wxgame.WebTouchHandler(stage, canvas);
                 var player = new egret.sys.Player(buffer, stage, option.entryClassName);
                 egret.lifecycle.stage = stage;
-                egret.lifecycle.addLifecycleListener(wxapp.WebLifeCycleHandler);
+                egret.lifecycle.addLifecycleListener(wxgame.WebLifeCycleHandler);
                 if (option.showFPS || option.showLog) {
                     player.displayFPS(option.showFPS, option.showLog, option.logFilter, option.fpsStyles);
                 }
@@ -3657,9 +3612,9 @@ if (true) {
                 var stageHeight = stageSize.stageHeight;
                 var displayWidth = stageSize.displayWidth;
                 var displayHeight = stageSize.displayHeight;
-                canvas.style[egret.wxapp.getPrefixStyleName("transformOrigin")] = "0% 0% 0px";
+                canvas.style[wxgame.getPrefixStyleName("transformOrigin")] = "0% 0% 0px";
                 if (canvas.width != stageWidth) {
-                    if (!egret.wxgame.isSubContext) {
+                    if (!wxgame.isSubContext) {
                         if (window["sharedCanvas"]) {
                             window["sharedCanvas"].width = stageWidth;
                         }
@@ -3667,7 +3622,7 @@ if (true) {
                     }
                 }
                 if (canvas.height != stageHeight) {
-                    if (!egret.wxgame.isSubContext) {
+                    if (!wxgame.isSubContext) {
                         if (window["sharedCanvas"]) {
                             window["sharedCanvas"].height = stageHeight;
                         }
@@ -3702,7 +3657,7 @@ if (true) {
                 m.scale(scalex / canvasScaleX, scaley / canvasScaleY);
                 m.rotate(rotation * Math.PI / 180);
                 var transform = "matrix(" + m.a + "," + m.b + "," + m.c + "," + m.d + "," + m.tx + "," + m.ty + ")";
-                canvas.style[egret.wxapp.getPrefixStyleName("transform")] = transform;
+                canvas.style[wxgame.getPrefixStyleName("transform")] = transform;
                 egret.sys.DisplayList.$setCanvasScale(canvasScaleX, canvasScaleY);
                 this.webTouchHandler.updateScaleMode(scalex, scaley, rotation);
                 this.player.updateStageSize(stageWidth, stageHeight); //不要在这个方法后面修改属性
@@ -3722,9 +3677,9 @@ if (true) {
             };
             return WebPlayer;
         }(egret.HashObject));
-        wxapp.WebPlayer = WebPlayer;
-        __reflect(WebPlayer.prototype, "egret.wxapp.WebPlayer", ["egret.sys.Screen"]);
-    })(wxapp = egret.wxapp || (egret.wxapp = {}));
+        wxgame.WebPlayer = WebPlayer;
+        __reflect(WebPlayer.prototype, "egret.wxgame.WebPlayer", ["egret.sys.Screen"]);
+    })(wxgame = egret.wxgame || (egret.wxgame = {}));
 })(egret || (egret = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -3756,8 +3711,8 @@ if (true) {
 //////////////////////////////////////////////////////////////////////////////////////
 
 (function (egret) {
-    var wxapp;
-    (function (wxapp) {
+    var wxgame;
+    (function (wxgame) {
         var sharedCanvas;
         var sharedContext;
         /**
@@ -3781,8 +3736,8 @@ if (true) {
             rect.y = Math.min(rect.y, h - 1);
             rect.width = Math.min(rect.width, w - rect.x);
             rect.height = Math.min(rect.height, h - rect.y);
-            var iWidth = rect.width;
-            var iHeight = rect.height;
+            var iWidth = Math.floor(rect.width);
+            var iHeight = Math.floor(rect.height);
             var surface = sharedCanvas;
             surface["style"]["width"] = iWidth + "px";
             surface["style"]["height"] = iHeight + "px";
@@ -3800,11 +3755,21 @@ if (true) {
                 }
                 //从RenderTexture中读取像素数据，填入canvas
                 var pixels = renderTexture.$renderBuffer.getPixels(rect.x, rect.y, iWidth, iHeight);
-                var imageData = new ImageData(iWidth, iHeight);
-                for (var i = 0; i < pixels.length; i++) {
-                    imageData.data[i] = pixels[i];
+                var x = 0;
+                var y = 0;
+                for (var i = 0; i < pixels.length; i += 4) {
+                    sharedContext.fillStyle =
+                        'rgba(' + pixels[i]
+                            + ',' + pixels[i + 1]
+                            + ',' + pixels[i + 2]
+                            + ',' + (pixels[i + 3] / 255) + ')';
+                    sharedContext.fillRect(x, y, 1, 1);
+                    x++;
+                    if (x == iWidth) {
+                        x = 0;
+                        y++;
+                    }
                 }
-                sharedContext.putImageData(imageData, 0, 0);
                 if (!texture.$renderBuffer) {
                     renderTexture.dispose();
                 }
@@ -3838,17 +3803,18 @@ if (true) {
          * 有些杀毒软件认为 saveToFile 可能是一个病毒文件
          */
         function eliFoTevas(type, filePath, rect, encoderOptions) {
-            var base64 = toDataURL.call(this, type, rect, encoderOptions);
-            if (base64 == null) {
-                return;
-            }
-            var href = base64.replace(/^data:image[^;]*/, "data:image/octet-stream");
-            var aLink = document.createElement('a');
-            aLink['download'] = filePath;
-            aLink.href = href;
-            var evt = document.createEvent('MouseEvents');
-            evt.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-            aLink.dispatchEvent(evt);
+            var surface = convertImageToCanvas(this, rect);
+            var result = surface.toTempFilePathSync({
+                fileType: type.indexOf("png") >= 0 ? "png" : "jpg"
+            });
+            wx.getFileSystemManager().saveFile({
+                tempFilePath: result,
+                filePath: wx.env.USER_DATA_PATH + "/" + filePath,
+                success: function (res) {
+                    //todo
+                }
+            });
+            return result;
         }
         function getPixel32(x, y) {
             egret.$warn(1041, "getPixel32", "getPixels");
@@ -3870,7 +3836,7 @@ if (true) {
         egret.Texture.prototype.saveToFile = eliFoTevas;
         egret.Texture.prototype.getPixel32 = getPixel32;
         egret.Texture.prototype.getPixels = getPixels;
-    })(wxapp = egret.wxapp || (egret.wxapp = {}));
+    })(wxgame = egret.wxgame || (egret.wxgame = {}));
 })(egret || (egret = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -3902,8 +3868,8 @@ if (true) {
 //////////////////////////////////////////////////////////////////////////////////////
 
 (function (egret) {
-    var wxapp;
-    (function (wxapp) {
+    var wxgame;
+    (function (wxgame) {
         /**
          * @private
          * XML节点基类
@@ -3918,8 +3884,8 @@ if (true) {
             }
             return XMLNode;
         }());
-        wxapp.XMLNode = XMLNode;
-        __reflect(XMLNode.prototype, "egret.wxapp.XMLNode");
+        wxgame.XMLNode = XMLNode;
+        __reflect(XMLNode.prototype, "egret.wxgame.XMLNode");
         /**
          * @private
          * XML节点对象
@@ -3949,8 +3915,8 @@ if (true) {
             }
             return XML;
         }(XMLNode));
-        wxapp.XML = XML;
-        __reflect(XML.prototype, "egret.wxapp.XML");
+        wxgame.XML = XML;
+        __reflect(XML.prototype, "egret.wxgame.XML");
         /**
          * @private
          * XML文本节点
@@ -3967,8 +3933,8 @@ if (true) {
             }
             return XMLText;
         }(XMLNode));
-        wxapp.XMLText = XMLText;
-        __reflect(XMLText.prototype, "egret.wxapp.XMLText");
+        wxgame.XMLText = XMLText;
+        __reflect(XMLText.prototype, "egret.wxgame.XMLText");
         var parser;
         /**
          * @private
@@ -4038,12 +4004,12 @@ if (true) {
             return xml;
         }
         egret.XML = { parse: parse };
-    })(wxapp = egret.wxapp || (egret.wxapp = {}));
+    })(wxgame = egret.wxgame || (egret.wxgame = {}));
 })(egret || (egret = {}));
 
 (function (egret) {
-    var wxapp;
-    (function (wxapp) {
+    var wxgame;
+    (function (wxgame) {
         /**
          * @private
          */
@@ -4079,15 +4045,15 @@ if (true) {
             };
             return WebDeviceOrientation;
         }(egret.EventDispatcher));
-        wxapp.WebDeviceOrientation = WebDeviceOrientation;
-        __reflect(WebDeviceOrientation.prototype, "egret.wxapp.WebDeviceOrientation", ["egret.DeviceOrientation"]);
-    })(wxapp = egret.wxapp || (egret.wxapp = {}));
+        wxgame.WebDeviceOrientation = WebDeviceOrientation;
+        __reflect(WebDeviceOrientation.prototype, "egret.wxgame.WebDeviceOrientation", ["egret.DeviceOrientation"]);
+    })(wxgame = egret.wxgame || (egret.wxgame = {}));
 })(egret || (egret = {}));
-egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
+egret.DeviceOrientation = egret.wxgame.WebDeviceOrientation;
 
 (function (egret) {
-    var wxapp;
-    (function (wxapp) {
+    var wxgame;
+    (function (wxgame) {
         /**
          * @private
          */
@@ -4154,15 +4120,15 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
             };
             return WebGeolocation;
         }(egret.EventDispatcher));
-        wxapp.WebGeolocation = WebGeolocation;
-        __reflect(WebGeolocation.prototype, "egret.wxapp.WebGeolocation", ["egret.Geolocation"]);
-        egret.Geolocation = egret.wxapp.WebGeolocation;
-    })(wxapp = egret.wxapp || (egret.wxapp = {}));
+        wxgame.WebGeolocation = WebGeolocation;
+        __reflect(WebGeolocation.prototype, "egret.wxgame.WebGeolocation", ["egret.Geolocation"]);
+        egret.Geolocation = egret.wxgame.WebGeolocation;
+    })(wxgame = egret.wxgame || (egret.wxgame = {}));
 })(egret || (egret = {}));
 
 (function (egret) {
-    var wxapp;
-    (function (wxapp) {
+    var wxgame;
+    (function (wxgame) {
         /**
          * @private
          */
@@ -4213,10 +4179,10 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
             };
             return WebMotion;
         }(egret.EventDispatcher));
-        wxapp.WebMotion = WebMotion;
-        __reflect(WebMotion.prototype, "egret.wxapp.WebMotion", ["egret.Motion"]);
-        egret.Motion = egret.wxapp.WebMotion;
-    })(wxapp = egret.wxapp || (egret.wxapp = {}));
+        wxgame.WebMotion = WebMotion;
+        __reflect(WebMotion.prototype, "egret.wxgame.WebMotion", ["egret.Motion"]);
+        egret.Motion = egret.wxgame.WebMotion;
+    })(wxgame = egret.wxgame || (egret.wxgame = {}));
 })(egret || (egret = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -4248,8 +4214,8 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
 //////////////////////////////////////////////////////////////////////////////////////
 
 (function (egret) {
-    var wxapp;
-    (function (wxapp) {
+    var wxgame;
+    (function (wxgame) {
         if (true) {
             var logFuncs_1;
             function setLogLevel(logType) {
@@ -4301,7 +4267,7 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
                 configurable: true
             });
         }
-    })(wxapp = egret.wxapp || (egret.wxapp = {}));
+    })(wxgame = egret.wxgame || (egret.wxgame = {}));
 })(egret || (egret = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -4333,8 +4299,15 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
 //////////////////////////////////////////////////////////////////////////////////////
 
 (function (egret) {
-    var wxapp;
-    (function (wxapp) {
+    var wxgame;
+    (function (wxgame) {
+        /**
+         * @private
+         * draw类型，所有的绘图操作都会缓存在drawData中，每个drawData都是一个drawable对象
+         * $renderWebGL方法依据drawable对象的类型，调用不同的绘制方法
+         */
+        //fix for egret3d
+        //修改枚举。
         /**
          * @private
          * 绘制指令管理器
@@ -4352,9 +4325,9 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
              * 压入绘制矩形指令
              */
             WebGLDrawCmdManager.prototype.pushDrawRect = function () {
-                if (this.drawDataLen == 0 || this.drawData[this.drawDataLen - 1].type != 1 /* RECT */) {
+                if (this.drawDataLen == 0 || this.drawData[this.drawDataLen - 1].type != 11 /* RECT */) {
                     var data = this.drawData[this.drawDataLen] || {};
-                    data.type = 1 /* RECT */;
+                    data.type = 11 /* RECT */;
                     data.count = 0;
                     this.drawData[this.drawDataLen] = data;
                     this.drawDataLen++;
@@ -4393,7 +4366,7 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
             WebGLDrawCmdManager.prototype.pushChangeSmoothing = function (texture, smoothing) {
                 texture["smoothing"] = smoothing;
                 var data = this.drawData[this.drawDataLen] || {};
-                data.type = 10 /* SMOOTHING */;
+                data.type = 9 /* SMOOTHING */;
                 data.texture = texture;
                 data.smoothing = smoothing;
                 this.drawData[this.drawDataLen] = data;
@@ -4405,7 +4378,7 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
             WebGLDrawCmdManager.prototype.pushPushMask = function (count) {
                 if (count === void 0) { count = 1; }
                 var data = this.drawData[this.drawDataLen] || {};
-                data.type = 2 /* PUSH_MASK */;
+                data.type = 1 /* PUSH_MASK */;
                 data.count = count * 2;
                 this.drawData[this.drawDataLen] = data;
                 this.drawDataLen++;
@@ -4416,7 +4389,7 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
             WebGLDrawCmdManager.prototype.pushPopMask = function (count) {
                 if (count === void 0) { count = 1; }
                 var data = this.drawData[this.drawDataLen] || {};
-                data.type = 3 /* POP_MASK */;
+                data.type = 2 /* POP_MASK */;
                 data.count = count * 2;
                 this.drawData[this.drawDataLen] = data;
                 this.drawDataLen++;
@@ -4431,17 +4404,17 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
                 for (var i = len - 1; i >= 0; i--) {
                     var data = this.drawData[i];
                     if (data) {
-                        if (data.type == 0 /* TEXTURE */ || data.type == 1 /* RECT */) {
+                        if (data.type == 0 /* TEXTURE */ || data.type == 11 /* RECT */) {
                             drawState = true;
                         }
                         // 如果与上一次blend操作之间无有效绘图，上一次操作无效
-                        if (!drawState && data.type == 4 /* BLEND */) {
+                        if (!drawState && data.type == 3 /* BLEND */) {
                             this.drawData.splice(i, 1);
                             this.drawDataLen--;
                             continue;
                         }
                         // 如果与上一次blend操作重复，本次操作无效
-                        if (data.type == 4 /* BLEND */) {
+                        if (data.type == 3 /* BLEND */) {
                             if (data.value == value) {
                                 return;
                             }
@@ -4452,7 +4425,7 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
                     }
                 }
                 var _data = this.drawData[this.drawDataLen] || {};
-                _data.type = 4 /* BLEND */;
+                _data.type = 3 /* BLEND */;
                 _data.value = value;
                 this.drawData[this.drawDataLen] = _data;
                 this.drawDataLen++;
@@ -4462,7 +4435,7 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
              */
             WebGLDrawCmdManager.prototype.pushResize = function (buffer, width, height) {
                 var data = this.drawData[this.drawDataLen] || {};
-                data.type = 5 /* RESIZE_TARGET */;
+                data.type = 4 /* RESIZE_TARGET */;
                 data.buffer = buffer;
                 data.width = width;
                 data.height = height;
@@ -4474,7 +4447,7 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
              */
             WebGLDrawCmdManager.prototype.pushClearColor = function () {
                 var data = this.drawData[this.drawDataLen] || {};
-                data.type = 6 /* CLEAR_COLOR */;
+                data.type = 5 /* CLEAR_COLOR */;
                 this.drawData[this.drawDataLen] = data;
                 this.drawDataLen++;
             };
@@ -4488,11 +4461,11 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
                 for (var i = len - 1; i >= 0; i--) {
                     var data = this.drawData[i];
                     if (data) {
-                        if (data.type != 4 /* BLEND */ && data.type != 7 /* ACT_BUFFER */) {
+                        if (data.type != 3 /* BLEND */ && data.type != 6 /* ACT_BUFFER */) {
                             drawState = true;
                         }
                         // 如果与上一次buffer操作之间无有效绘图，上一次操作无效
-                        if (!drawState && data.type == 7 /* ACT_BUFFER */) {
+                        if (!drawState && data.type == 6 /* ACT_BUFFER */) {
                             this.drawData.splice(i, 1);
                             this.drawDataLen--;
                             continue;
@@ -4508,7 +4481,7 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
                     }
                 }
                 var _data = this.drawData[this.drawDataLen] || {};
-                _data.type = 7 /* ACT_BUFFER */;
+                _data.type = 6 /* ACT_BUFFER */;
                 _data.buffer = buffer;
                 _data.width = buffer.rootRenderTarget.width;
                 _data.height = buffer.rootRenderTarget.height;
@@ -4520,7 +4493,7 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
              */
             WebGLDrawCmdManager.prototype.pushEnableScissor = function (x, y, width, height) {
                 var data = this.drawData[this.drawDataLen] || {};
-                data.type = 8 /* ENABLE_SCISSOR */;
+                data.type = 7 /* ENABLE_SCISSOR */;
                 data.x = x;
                 data.y = y;
                 data.width = width;
@@ -4533,7 +4506,7 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
              */
             WebGLDrawCmdManager.prototype.pushDisableScissor = function () {
                 var data = this.drawData[this.drawDataLen] || {};
-                data.type = 9 /* DISABLE_SCISSOR */;
+                data.type = 8 /* DISABLE_SCISSOR */;
                 this.drawData[this.drawDataLen] = data;
                 this.drawDataLen++;
             };
@@ -4557,9 +4530,9 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
             };
             return WebGLDrawCmdManager;
         }());
-        wxapp.WebGLDrawCmdManager = WebGLDrawCmdManager;
-        __reflect(WebGLDrawCmdManager.prototype, "egret.wxapp.WebGLDrawCmdManager");
-    })(wxapp = egret.wxapp || (egret.wxapp = {}));
+        wxgame.WebGLDrawCmdManager = WebGLDrawCmdManager;
+        __reflect(WebGLDrawCmdManager.prototype, "egret.wxgame.WebGLDrawCmdManager");
+    })(wxgame = egret.wxgame || (egret.wxgame = {}));
 })(egret || (egret = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -4591,8 +4564,8 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
 //////////////////////////////////////////////////////////////////////////////////////
 
 (function (egret) {
-    var wxapp;
-    (function (wxapp) {
+    var wxgame;
+    (function (wxgame) {
         /**
          * @private
          * 顶点数组管理对象
@@ -4852,9 +4825,9 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
             };
             return WebGLVertexArrayObject;
         }());
-        wxapp.WebGLVertexArrayObject = WebGLVertexArrayObject;
-        __reflect(WebGLVertexArrayObject.prototype, "egret.wxapp.WebGLVertexArrayObject");
-    })(wxapp = egret.wxapp || (egret.wxapp = {}));
+        wxgame.WebGLVertexArrayObject = WebGLVertexArrayObject;
+        __reflect(WebGLVertexArrayObject.prototype, "egret.wxgame.WebGLVertexArrayObject");
+    })(wxgame = egret.wxgame || (egret.wxgame = {}));
 })(egret || (egret = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -4886,8 +4859,8 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
 //////////////////////////////////////////////////////////////////////////////////////
 
 (function (egret) {
-    var wxapp;
-    (function (wxapp) {
+    var wxgame;
+    (function (wxgame) {
         /**
          * @private
          * WebGLRenderTarget类
@@ -5000,9 +4973,9 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
             };
             return WebGLRenderTarget;
         }(egret.HashObject));
-        wxapp.WebGLRenderTarget = WebGLRenderTarget;
-        __reflect(WebGLRenderTarget.prototype, "egret.wxapp.WebGLRenderTarget");
-    })(wxapp = egret.wxapp || (egret.wxapp = {}));
+        wxgame.WebGLRenderTarget = WebGLRenderTarget;
+        __reflect(WebGLRenderTarget.prototype, "egret.wxgame.WebGLRenderTarget");
+    })(wxgame = egret.wxgame || (egret.wxgame = {}));
 })(egret || (egret = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -5034,8 +5007,8 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
 //////////////////////////////////////////////////////////////////////////////////////
 
 (function (egret) {
-    var wxapp;
-    (function (wxapp) {
+    var wxgame;
+    (function (wxgame) {
         /**
          * @private
          * WebGL上下文对象，提供简单的绘图接口
@@ -5057,8 +5030,8 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
                 this.indexBuffer = gl.createBuffer();
                 gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
                 gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
-                this.drawCmdManager = new wxapp.WebGLDrawCmdManager();
-                this.vao = new wxapp.WebGLVertexArrayObject();
+                this.drawCmdManager = new wxgame.WebGLDrawCmdManager();
+                this.vao = new wxgame.WebGLVertexArrayObject();
                 this.setGlobalCompositeOperation("source-over");
             }
             WebGLRenderContext.getInstance = function (width, height) {
@@ -5153,13 +5126,13 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
                 if (useMaxSize) {
                     if (surface.width < width) {
                         surface.width = width;
-                        if (!egret.wxgame.isSubContext && window["sharedCanvas"]) {
+                        if (!wxgame.isSubContext && window["sharedCanvas"]) {
                             window["sharedCanvas"].width = width;
                         }
                     }
                     if (surface.height < height) {
                         surface.height = height;
-                        if (!egret.wxgame.isSubContext && window["sharedCanvas"]) {
+                        if (!wxgame.isSubContext && window["sharedCanvas"]) {
                             window["sharedCanvas"].height = height;
                         }
                     }
@@ -5167,13 +5140,13 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
                 else {
                     if (surface.width != width) {
                         surface.width = width;
-                        if (!egret.wxgame.isSubContext && window["sharedCanvas"]) {
+                        if (!wxgame.isSubContext && window["sharedCanvas"]) {
                             window["sharedCanvas"].width = width;
                         }
                     }
                     if (surface.height != height) {
                         surface.height = height;
-                        if (!egret.wxgame.isSubContext && window["sharedCanvas"]) {
+                        if (!wxgame.isSubContext && window["sharedCanvas"]) {
                             window["sharedCanvas"].height = height;
                         }
                     }
@@ -5271,6 +5244,9 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
              */
             WebGLRenderContext.prototype.createTexture = function (bitmapData) {
                 var gl = this.context;
+                if (bitmapData == window["sharedCanvas"] && gl.wxBindCanvasTexture != null) {
+                    return bitmapData;
+                }
                 var texture = gl.createTexture();
                 if (!texture) {
                     //先创建texture失败,然后lost事件才发出来..
@@ -5539,10 +5515,10 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
                     var data = this.drawCmdManager.drawData[i];
                     offset = this.drawData(data, offset);
                     // 计算draw call
-                    if (data.type == 7 /* ACT_BUFFER */) {
+                    if (data.type == 6 /* ACT_BUFFER */) {
                         this.activatedBuffer = data.buffer;
                     }
-                    if (data.type == 0 /* TEXTURE */ || data.type == 1 /* RECT */ || data.type == 2 /* PUSH_MASK */ || data.type == 3 /* POP_MASK */) {
+                    if (data.type == 0 /* TEXTURE */ || data.type == 11 /* RECT */ || data.type == 1 /* PUSH_MASK */ || data.type == 2 /* POP_MASK */) {
                         if (this.activatedBuffer && this.activatedBuffer.$computeDrawCall) {
                             this.activatedBuffer.$drawCalls++;
                         }
@@ -5570,54 +5546,54 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
                     case 0 /* TEXTURE */:
                         if (filter) {
                             if (filter.type === "custom") {
-                                program = wxapp.EgretWebGLProgram.getProgram(gl, filter.$vertexSrc, filter.$fragmentSrc, filter.$shaderKey);
+                                program = wxgame.EgretWebGLProgram.getProgram(gl, filter.$vertexSrc, filter.$fragmentSrc, filter.$shaderKey);
                             }
                             else if (filter.type === "colorTransform") {
-                                program = wxapp.EgretWebGLProgram.getProgram(gl, wxapp.EgretShaderLib.default_vert, wxapp.EgretShaderLib.colorTransform_frag, "colorTransform");
+                                program = wxgame.EgretWebGLProgram.getProgram(gl, wxgame.EgretShaderLib.default_vert, wxgame.EgretShaderLib.colorTransform_frag, "colorTransform");
                             }
                             else if (filter.type === "blurX") {
-                                program = wxapp.EgretWebGLProgram.getProgram(gl, wxapp.EgretShaderLib.default_vert, wxapp.EgretShaderLib.blur_frag, "blur");
+                                program = wxgame.EgretWebGLProgram.getProgram(gl, wxgame.EgretShaderLib.default_vert, wxgame.EgretShaderLib.blur_frag, "blur");
                             }
                             else if (filter.type === "blurY") {
-                                program = wxapp.EgretWebGLProgram.getProgram(gl, wxapp.EgretShaderLib.default_vert, wxapp.EgretShaderLib.blur_frag, "blur");
+                                program = wxgame.EgretWebGLProgram.getProgram(gl, wxgame.EgretShaderLib.default_vert, wxgame.EgretShaderLib.blur_frag, "blur");
                             }
                             else if (filter.type === "glow") {
-                                program = wxapp.EgretWebGLProgram.getProgram(gl, wxapp.EgretShaderLib.default_vert, wxapp.EgretShaderLib.glow_frag, "glow");
+                                program = wxgame.EgretWebGLProgram.getProgram(gl, wxgame.EgretShaderLib.default_vert, wxgame.EgretShaderLib.glow_frag, "glow");
                             }
                         }
                         else {
-                            program = wxapp.EgretWebGLProgram.getProgram(gl, wxapp.EgretShaderLib.default_vert, wxapp.EgretShaderLib.texture_frag, "texture");
+                            program = wxgame.EgretWebGLProgram.getProgram(gl, wxgame.EgretShaderLib.default_vert, wxgame.EgretShaderLib.texture_frag, "texture");
                         }
                         this.activeProgram(gl, program);
                         this.syncUniforms(program, filter, data.textureWidth, data.textureHeight);
                         offset += this.drawTextureElements(data, offset);
                         break;
-                    case 1 /* RECT */:
-                        program = wxapp.EgretWebGLProgram.getProgram(gl, wxapp.EgretShaderLib.default_vert, wxapp.EgretShaderLib.primitive_frag, "primitive");
+                    case 11 /* RECT */:
+                        program = wxgame.EgretWebGLProgram.getProgram(gl, wxgame.EgretShaderLib.default_vert, wxgame.EgretShaderLib.primitive_frag, "primitive");
                         this.activeProgram(gl, program);
                         this.syncUniforms(program, filter, data.textureWidth, data.textureHeight);
                         offset += this.drawRectElements(data, offset);
                         break;
-                    case 2 /* PUSH_MASK */:
-                        program = wxapp.EgretWebGLProgram.getProgram(gl, wxapp.EgretShaderLib.default_vert, wxapp.EgretShaderLib.primitive_frag, "primitive");
+                    case 1 /* PUSH_MASK */:
+                        program = wxgame.EgretWebGLProgram.getProgram(gl, wxgame.EgretShaderLib.default_vert, wxgame.EgretShaderLib.primitive_frag, "primitive");
                         this.activeProgram(gl, program);
                         this.syncUniforms(program, filter, data.textureWidth, data.textureHeight);
                         offset += this.drawPushMaskElements(data, offset);
                         break;
-                    case 3 /* POP_MASK */:
-                        program = wxapp.EgretWebGLProgram.getProgram(gl, wxapp.EgretShaderLib.default_vert, wxapp.EgretShaderLib.primitive_frag, "primitive");
+                    case 2 /* POP_MASK */:
+                        program = wxgame.EgretWebGLProgram.getProgram(gl, wxgame.EgretShaderLib.default_vert, wxgame.EgretShaderLib.primitive_frag, "primitive");
                         this.activeProgram(gl, program);
                         this.syncUniforms(program, filter, data.textureWidth, data.textureHeight);
                         offset += this.drawPopMaskElements(data, offset);
                         break;
-                    case 4 /* BLEND */:
+                    case 3 /* BLEND */:
                         this.setBlendMode(data.value);
                         break;
-                    case 5 /* RESIZE_TARGET */:
+                    case 4 /* RESIZE_TARGET */:
                         data.buffer.rootRenderTarget.resize(data.width, data.height);
                         this.onResize(data.width, data.height);
                         break;
-                    case 6 /* CLEAR_COLOR */:
+                    case 5 /* CLEAR_COLOR */:
                         if (this.activatedBuffer) {
                             var target = this.activatedBuffer.rootRenderTarget;
                             if (target.width != 0 || target.height != 0) {
@@ -5625,10 +5601,10 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
                             }
                         }
                         break;
-                    case 7 /* ACT_BUFFER */:
+                    case 6 /* ACT_BUFFER */:
                         this.activateBuffer(data.buffer);
                         break;
-                    case 8 /* ENABLE_SCISSOR */:
+                    case 7 /* ENABLE_SCISSOR */:
                         var buffer = this.activatedBuffer;
                         if (buffer) {
                             if (buffer.rootRenderTarget) {
@@ -5637,13 +5613,13 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
                             buffer.enableScissor(data.x, data.y, data.width, data.height);
                         }
                         break;
-                    case 9 /* DISABLE_SCISSOR */:
+                    case 8 /* DISABLE_SCISSOR */:
                         buffer = this.activatedBuffer;
                         if (buffer) {
                             buffer.disableScissor();
                         }
                         break;
-                    case 10 /* SMOOTHING */:
+                    case 9 /* SMOOTHING */:
                         gl.bindTexture(gl.TEXTURE_2D, data.texture);
                         if (data.smoothing) {
                             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
@@ -5709,7 +5685,12 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
              **/
             WebGLRenderContext.prototype.drawTextureElements = function (data, offset) {
                 var gl = this.context;
-                gl.bindTexture(gl.TEXTURE_2D, data.texture);
+                if (data.texture == window["sharedCanvas"]) {
+                    gl.wxBindCanvasTexture(gl.TEXTURE_2D, window["sharedCanvas"]);
+                }
+                else {
+                    gl.bindTexture(gl.TEXTURE_2D, data.texture);
+                }
                 var size = data.count * 3;
                 gl.drawElements(gl.TRIANGLES, size, gl.UNSIGNED_SHORT, offset * 2);
                 return size;
@@ -5801,12 +5782,12 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
                         var filter_1 = filters[i];
                         var width = input.rootRenderTarget.width;
                         var height = input.rootRenderTarget.height;
-                        output = wxapp.WebGLRenderBuffer.create(width, height);
+                        output = wxgame.WebGLRenderBuffer.create(width, height);
                         output.setTransform(1, 0, 0, 1, 0, 0);
                         output.globalAlpha = 1;
                         this.drawToRenderTarget(filter_1, input, output);
                         if (input != originInput) {
-                            wxapp.WebGLRenderBuffer.release(input);
+                            wxgame.WebGLRenderBuffer.release(input);
                         }
                         input = output;
                     }
@@ -5816,7 +5797,7 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
                 this.drawToRenderTarget(filter, input, this.currentBuffer);
                 // 释放掉用于交换的buffer
                 if (input != originInput) {
-                    wxapp.WebGLRenderBuffer.release(input);
+                    wxgame.WebGLRenderBuffer.release(input);
                 }
             };
             /**
@@ -5836,12 +5817,12 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
                     var blurXFilter = filter.blurXFilter;
                     var blurYFilter = filter.blurYFilter;
                     if (blurXFilter.blurX != 0 && blurYFilter.blurY != 0) {
-                        temp = wxapp.WebGLRenderBuffer.create(width, height);
+                        temp = wxgame.WebGLRenderBuffer.create(width, height);
                         temp.setTransform(1, 0, 0, 1, 0, 0);
                         temp.globalAlpha = 1;
                         this.drawToRenderTarget(filter.blurXFilter, input, temp);
                         if (input != originInput) {
-                            wxapp.WebGLRenderBuffer.release(input);
+                            wxgame.WebGLRenderBuffer.release(input);
                         }
                         input = temp;
                         filter = blurYFilter;
@@ -5858,7 +5839,7 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
                 this.drawCmdManager.pushDrawTexture(input.rootRenderTarget.texture, 2, filter, width, height);
                 // 释放掉input
                 if (input != originInput) {
-                    wxapp.WebGLRenderBuffer.release(input);
+                    wxgame.WebGLRenderBuffer.release(input);
                 }
                 this.popBuffer();
             };
@@ -5874,10 +5855,10 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
             WebGLRenderContext.blendModesForGL = null;
             return WebGLRenderContext;
         }());
-        wxapp.WebGLRenderContext = WebGLRenderContext;
-        __reflect(WebGLRenderContext.prototype, "egret.wxapp.WebGLRenderContext");
+        wxgame.WebGLRenderContext = WebGLRenderContext;
+        __reflect(WebGLRenderContext.prototype, "egret.wxgame.WebGLRenderContext");
         WebGLRenderContext.initBlendMode();
-    })(wxapp = egret.wxapp || (egret.wxapp = {}));
+    })(wxgame = egret.wxgame || (egret.wxgame = {}));
 })(egret || (egret = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -5909,8 +5890,8 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
 //////////////////////////////////////////////////////////////////////////////////////
 
 (function (egret) {
-    var wxapp;
-    (function (wxapp) {
+    var wxgame;
+    (function (wxgame) {
         /**
          * @private
          * WebGL渲染缓存
@@ -5941,9 +5922,9 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
                 _this.$offsetX = 0;
                 _this.$offsetY = 0;
                 // 获取webglRenderContext
-                _this.context = wxapp.WebGLRenderContext.getInstance(width, height);
+                _this.context = wxgame.WebGLRenderContext.getInstance(width, height);
                 // buffer 对应的 render target
-                _this.rootRenderTarget = new wxapp.WebGLRenderTarget(_this.context.context, 3, 3);
+                _this.rootRenderTarget = new wxgame.WebGLRenderTarget(_this.context.context, 3, 3);
                 if (width && height) {
                     _this.resize(width, height);
                 }
@@ -6079,6 +6060,9 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
                     }
                 }
                 return result;
+            };
+            WebGLRenderBuffer.prototype.$pushResize = function (width, height) {
+                this.context.drawCmdManager.pushResize(this, width, height);
             };
             /**
              * 转换成base64字符串，如果图片（或者包含的图片）跨域，则返回null
@@ -6240,10 +6224,10 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
             WebGLRenderBuffer.autoClear = true;
             return WebGLRenderBuffer;
         }(egret.HashObject));
-        wxapp.WebGLRenderBuffer = WebGLRenderBuffer;
-        __reflect(WebGLRenderBuffer.prototype, "egret.wxapp.WebGLRenderBuffer", ["egret.sys.RenderBuffer"]);
+        wxgame.WebGLRenderBuffer = WebGLRenderBuffer;
+        __reflect(WebGLRenderBuffer.prototype, "egret.wxgame.WebGLRenderBuffer", ["egret.sys.RenderBuffer"]);
         var renderBufferPool = []; //渲染缓冲区对象池
-    })(wxapp = egret.wxapp || (egret.wxapp = {}));
+    })(wxgame = egret.wxgame || (egret.wxgame = {}));
 })(egret || (egret = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -6275,8 +6259,8 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
 //////////////////////////////////////////////////////////////////////////////////////
 
 (function (egret) {
-    var wxapp;
-    (function (wxapp) {
+    var wxgame;
+    (function (wxgame) {
         var blendModes = ["source-over", "lighter", "destination-out"];
         var defaultCompositeOp = "source-over";
         var BLACK_COLOR = "#000000";
@@ -7046,7 +7030,7 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
                 }
                 if (!this.canvasRenderBuffer || !this.canvasRenderBuffer.context) {
                     this.canvasRenderer = new egret.CanvasRenderer();
-                    this.canvasRenderBuffer = new wxapp.CanvasRenderBuffer(width, height);
+                    this.canvasRenderBuffer = new wxgame.CanvasRenderBuffer(width, height);
                 }
                 else if (node.dirtyRender) {
                     this.canvasRenderBuffer.resize(width, height);
@@ -7124,7 +7108,7 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
                 height = height2;
                 if (!this.canvasRenderBuffer || !this.canvasRenderBuffer.context) {
                     this.canvasRenderer = new egret.CanvasRenderer();
-                    this.canvasRenderBuffer = new wxapp.CanvasRenderBuffer(width, height);
+                    this.canvasRenderBuffer = new wxgame.CanvasRenderBuffer(width, height);
                 }
                 else if (node.dirtyRender || forHitTest) {
                     this.canvasRenderBuffer.resize(width, height);
@@ -7226,16 +7210,16 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
                     buffer.resize(width, height);
                 }
                 else {
-                    buffer = new wxapp.WebGLRenderBuffer(width, height);
+                    buffer = new wxgame.WebGLRenderBuffer(width, height);
                     buffer.$computeDrawCall = false;
                 }
                 return buffer;
             };
             return WebGLRenderer;
         }());
-        wxapp.WebGLRenderer = WebGLRenderer;
-        __reflect(WebGLRenderer.prototype, "egret.wxapp.WebGLRenderer", ["egret.sys.SystemRenderer"]);
-    })(wxapp = egret.wxapp || (egret.wxapp = {}));
+        wxgame.WebGLRenderer = WebGLRenderer;
+        __reflect(WebGLRenderer.prototype, "egret.wxgame.WebGLRenderer", ["egret.sys.SystemRenderer"]);
+    })(wxgame = egret.wxgame || (egret.wxgame = {}));
 })(egret || (egret = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -7267,8 +7251,8 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
 //////////////////////////////////////////////////////////////////////////////////////
 
 (function (egret) {
-    var wxapp;
-    (function (wxapp) {
+    var wxgame;
+    (function (wxgame) {
         /**
          * @private
          */
@@ -7281,7 +7265,7 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
             WEBGL_ATTRIBUTE_TYPE[WEBGL_ATTRIBUTE_TYPE["BYTE"] = 65535] = "BYTE";
             WEBGL_ATTRIBUTE_TYPE[WEBGL_ATTRIBUTE_TYPE["UNSIGNED_BYTE"] = 5121] = "UNSIGNED_BYTE";
             WEBGL_ATTRIBUTE_TYPE[WEBGL_ATTRIBUTE_TYPE["UNSIGNED_SHORT"] = 5123] = "UNSIGNED_SHORT";
-        })(WEBGL_ATTRIBUTE_TYPE = wxapp.WEBGL_ATTRIBUTE_TYPE || (wxapp.WEBGL_ATTRIBUTE_TYPE = {}));
+        })(WEBGL_ATTRIBUTE_TYPE = wxgame.WEBGL_ATTRIBUTE_TYPE || (wxgame.WEBGL_ATTRIBUTE_TYPE = {}));
         /**
          * @private
          */
@@ -7339,9 +7323,9 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
             };
             return EgretWebGLAttribute;
         }());
-        wxapp.EgretWebGLAttribute = EgretWebGLAttribute;
-        __reflect(EgretWebGLAttribute.prototype, "egret.wxapp.EgretWebGLAttribute");
-    })(wxapp = egret.wxapp || (egret.wxapp = {}));
+        wxgame.EgretWebGLAttribute = EgretWebGLAttribute;
+        __reflect(EgretWebGLAttribute.prototype, "egret.wxgame.EgretWebGLAttribute");
+    })(wxgame = egret.wxgame || (egret.wxgame = {}));
 })(egret || (egret = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -7373,8 +7357,8 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
 //////////////////////////////////////////////////////////////////////////////////////
 
 (function (egret) {
-    var wxapp;
-    (function (wxapp) {
+    var wxgame;
+    (function (wxgame) {
         function loadShader(gl, type, source) {
             var shader = gl.createShader(type);
             gl.shaderSource(shader, source);
@@ -7399,7 +7383,7 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
             for (var i = 0; i < totalAttributes; i++) {
                 var attribData = gl.getActiveAttrib(program, i);
                 var name_2 = attribData.name;
-                var attribute = new wxapp.EgretWebGLAttribute(gl, program, attribData);
+                var attribute = new wxgame.EgretWebGLAttribute(gl, program, attribData);
                 attributes[name_2] = attribute;
             }
             return attributes;
@@ -7410,7 +7394,7 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
             for (var i = 0; i < totalUniforms; i++) {
                 var uniformData = gl.getActiveUniform(program, i);
                 var name_3 = uniformData.name;
-                var uniform = new wxapp.EgretWebGLUniform(gl, program, uniformData);
+                var uniform = new wxgame.EgretWebGLUniform(gl, program, uniformData);
                 uniforms[name_3] = uniform;
             }
             return uniforms;
@@ -7444,9 +7428,9 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
             EgretWebGLProgram.programCache = {};
             return EgretWebGLProgram;
         }());
-        wxapp.EgretWebGLProgram = EgretWebGLProgram;
-        __reflect(EgretWebGLProgram.prototype, "egret.wxapp.EgretWebGLProgram");
-    })(wxapp = egret.wxapp || (egret.wxapp = {}));
+        wxgame.EgretWebGLProgram = EgretWebGLProgram;
+        __reflect(EgretWebGLProgram.prototype, "egret.wxgame.EgretWebGLProgram");
+    })(wxgame = egret.wxgame || (egret.wxgame = {}));
 })(egret || (egret = {}));
 //////////////////////////////////////////////////////////////////////////////////////
 //
@@ -7478,8 +7462,8 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
 //////////////////////////////////////////////////////////////////////////////////////
 
 (function (egret) {
-    var wxapp;
-    (function (wxapp) {
+    var wxgame;
+    (function (wxgame) {
         /**
          * @private
          */
@@ -7507,7 +7491,7 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
             WEBGL_UNIFORM_TYPE[WEBGL_UNIFORM_TYPE["INT"] = 5124] = "INT";
             WEBGL_UNIFORM_TYPE[WEBGL_UNIFORM_TYPE["UNSIGNED_INT"] = 5125] = "UNSIGNED_INT";
             WEBGL_UNIFORM_TYPE[WEBGL_UNIFORM_TYPE["FLOAT"] = 5126] = "FLOAT";
-        })(WEBGL_UNIFORM_TYPE = wxapp.WEBGL_UNIFORM_TYPE || (wxapp.WEBGL_UNIFORM_TYPE = {}));
+        })(WEBGL_UNIFORM_TYPE = wxgame.WEBGL_UNIFORM_TYPE || (wxgame.WEBGL_UNIFORM_TYPE = {}));
         /**
          * @private
          */
@@ -7706,14 +7690,14 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
             };
             return EgretWebGLUniform;
         }());
-        wxapp.EgretWebGLUniform = EgretWebGLUniform;
-        __reflect(EgretWebGLUniform.prototype, "egret.wxapp.EgretWebGLUniform");
-    })(wxapp = egret.wxapp || (egret.wxapp = {}));
+        wxgame.EgretWebGLUniform = EgretWebGLUniform;
+        __reflect(EgretWebGLUniform.prototype, "egret.wxgame.EgretWebGLUniform");
+    })(wxgame = egret.wxgame || (egret.wxgame = {}));
 })(egret || (egret = {}));
 
 (function (egret) {
-    var wxapp;
-    (function (wxapp) {
+    var wxgame;
+    (function (wxgame) {
         /**
          * @private
          */
@@ -7728,8 +7712,8 @@ egret.DeviceOrientation = egret.wxapp.WebDeviceOrientation;
             EgretShaderLib.texture_frag = "precision lowp float;\nvarying vec2 vTextureCoord;\nvarying vec4 vColor;\nuniform sampler2D uSampler;\nvoid main(void) {\n    gl_FragColor = texture2D(uSampler, vTextureCoord) * vColor;\n}";
             return EgretShaderLib;
         }());
-        wxapp.EgretShaderLib = EgretShaderLib;
-        __reflect(EgretShaderLib.prototype, "egret.wxapp.EgretShaderLib");
-    })(wxapp = egret.wxapp || (egret.wxapp = {}));
+        wxgame.EgretShaderLib = EgretShaderLib;
+        __reflect(EgretShaderLib.prototype, "egret.wxgame.EgretShaderLib");
+    })(wxgame = egret.wxgame || (egret.wxgame = {}));
 })(egret || (egret = {}));
 ;

@@ -1,16 +1,16 @@
 {
 	"description": "项目配置文件。",
 	"setting": {
-		"urlCheck": false,
+		"urlCheck": true,
 		"es6": true,
 		"postcss": true,
 		"minified": true,
 		"newFeature": true
 	},
 	"compileType": "game",
-	"libVersion": "1.9.90",
+	"libVersion": "2.0.9",
 	"appid": "wxef27dfb79ff23fba",
-	"projectname": "%E6%96%B0%E7%99%BB%E9%99%86",
+	"projectname": "%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%A5%97%E4%BB%B6%E6%B5%8B%E8%AF%95",
 	"condition": {
 		"search": {
 			"current": -1,

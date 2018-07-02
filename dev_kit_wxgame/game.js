@@ -3,6 +3,10 @@ require('./platform.js');
 require('./manifest.js');
 require('./egret.wxgame.js');
 
+// 启动微信小游戏本地缓存，如果开发者不需要此功能，只需注释即可
+require('./library/image.js');
+require('./library/text.js');
+
 egret.runEgret({
     //以下为自动修改，请勿修改
     //The following is automatically modified, please do not modify
