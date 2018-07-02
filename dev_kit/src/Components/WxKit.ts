@@ -23,17 +23,21 @@ class WxKit {
             .then((res: { code?}) => { code = res.code })
             .catch(err => { console.warn(err) });
 
+        // 调用 wx.getUserInfo
         await PLATFORM.getUserInfo()
             .then(async (res: { iv?, enctypecode?}) => {
                 let userInfo = JSON.parse(JSON.stringify(res))
                 WxKit.iv = userInfo.iv;
                 WxKit.enctypecode = userInfo.encryptedData;
+
+                // 调用自己的服务器登录接口
                 await PLATFORM.auth(code, userInfo.iv, userInfo.encryptedData)
                     .then(res => {
                         result = JSON.parse(JSON.stringify(res));
+                        // 设置通讯token
                         Api.setToken(result.data.token);
+                        // 存入用户数据
                         UserData.setUserData(result.data);
-                        Api.postEvent('open');
                         console.log('login_success');
                     })
                     .catch(err => { console.warn(err) });
@@ -45,21 +49,24 @@ class WxKit {
             .catch(async err => {
                 // if方法进入旧版getUserInfo对应的重授权弹窗
                 if (typeof wx.createUserInfoButton != 'function') {
+                    // 重授权弹窗调用，若拒绝会再次弹出
                     await WxKit.reAuth()
                         .then(async (res: { iv?, encryptedData?}) => {
                             userInfo = JSON.parse(JSON.stringify(res))
+                            // 授权成功后登录
                             await PLATFORM.auth(code, userInfo.iv, userInfo.encryptedData)
                                 .then(res => {
                                     result = JSON.parse(JSON.stringify(res));
                                     Api.setToken(result.data.token);
                                     UserData.setUserData(result.data);
-                                    Api.postEvent('open');
                                     console.log('login_success');
                                 })
-                                .catch(err => { console.warn(err) });
+                                .catch(err => {
+                                    console.warn(err);
+                                });
                         });
-                    // else 方法进入新版调用 createUserInfoButton授权弹窗
                 } else {
+                    // else 方法进入新版调用 createUserInfoButton授权弹窗
                     wx.hideLoading();
                     var button = wx.createUserInfoButton(WxLoginButton.btnSkin)
                     button.show();
@@ -73,7 +80,6 @@ class WxKit {
                                     result = JSON.parse(JSON.stringify(res));
                                     Api.setToken(result.data.token);
                                     UserData.setUserData(result.data);
-                                    Api.postEvent('open');
                                     console.log('login_success');
                                 })
                                 .catch(err => { console.warn(err) });
@@ -116,6 +122,7 @@ class WxKit {
      * 设置默认分享
      */
     public static setDefaultShare() {
+        console.log('set_default_share');
         wx.showShareMenu({
             withShareTicket: true,
             success: (res) => { console.log('setting_success'); console.log(res); },
@@ -153,7 +160,6 @@ class WxKit {
                 imageUrl: imageUrl,
                 query: type.match('group') ? 'groupRank=1' : '',
                 success: res => {
-                    Api.postEvent(type);
                     resolve(res);
                 },
                 fail: (err) => { resolve(null); }
@@ -206,19 +212,16 @@ class WxKit {
         }, this);
 
         openDataContext.postMessage(basic);
-
+        console.log('link_done');
         return open_data_container;
     }
 
+    // 上传成绩至开放数据域
     public static async uploadScore(score: number) {
-        let week_record = 0;
-        await Records.getWeekScore().then(res => {
-            week_record = res;
-        });
-        if (score >= week_record) {
-            await PLATFORM.setKVData({ "score": score + '', "date": Utils.getNowDate() })
-                .then(res => { });
-        }
+
+        await PLATFORM.setKVData({ "score": score + '', "date": Utils.getNowDate() })
+            .then(res => { });
+
         return true;
     }
 
@@ -231,8 +234,106 @@ class WxKit {
         })
     }
 
-}
 
-// 设置默认分享
-WxKit.setDefaultShare();
-WxKit.setOnShowRule();
+
+    /**
+     * 流量主视频广告调用方法
+     * 
+     */
+    private static video_ads = {};
+    private static current_video_ad_id = '';
+
+    public static showVideoAd(ad_id: string, success_callback: Function, err_callback?: Function) {
+        // 无ad_id时弹出警告
+        if (!(ad_id)) {
+            wx.showModal({
+                title: '系统提示', content: "请填入ad_id", showCancel: false, cancelText: "", confirmText: "确定",
+                success: () => {
+                    err_callback();
+                }
+            })
+            return
+        }
+        // 低版本兼容方法
+        if (!(typeof wx.createRewardedVideoAd == 'function')) {
+            wx.showModal({
+                title: '系统提示', content: "您的微信版本太低，暂时无法获取广告", showCancel: false, cancelText: "", confirmText: "确定",
+                success: () => {
+                    success_callback();
+                }
+            })
+            return
+        }
+        this.video_ads[ad_id] = wx.createRewardedVideoAd({
+            adUnitId: ad_id
+        })
+        this.current_video_ad_id = ad_id;
+        // 播放广告时暂停背景音乐
+        Mp3.stopBGM();
+        this.video_ads[ad_id].load()
+            .then(() => {
+                // 加载成功后播放视频
+                this.video_ads[ad_id].show();
+            })
+            // 加载失败时直接当作玩家视频广告观看成功
+            .catch(err => {
+                wx.showModal({
+                    title: '系统提示', content: "暂时无法获取广告", showCancel: false, cancelText: "", confirmText: "确定",
+                    success: () => {
+                        this.current_video_ad_id == ad_id && success_callback() && (this.current_video_ad_id = '');
+                    }
+                })
+            });
+
+        // 兼容新老版本广告关闭按钮
+        this.video_ads[ad_id].onClose(function onCloseFunc(status) {
+            if (!status || status.isEnded) {
+                // 用户完整观看广告
+                WxKit.current_video_ad_id == ad_id && success_callback() && (WxKit.current_video_ad_id = '');
+            } else {
+                // 用户提前点击了【关闭广告】按钮,进入失败回调
+                err_callback && WxKit.current_video_ad_id == ad_id && err_callback() && (WxKit.current_video_ad_id = '');
+            }
+            // 关闭后重开背景音乐
+            Mp3.playBGM();
+            // 停止监听close方法
+            WxKit.video_ads[ad_id].offClose(onCloseFunc);
+        })
+
+    }
+
+    /**
+     * banner广告调用方法
+     */
+    public static showBannerAd(ad_id: string): any {
+        // 无ad_id时弹出警告
+        if (!(ad_id)) {
+            wx.showModal({
+                title: '系统提示', content: "请填入ad_id", showCancel: false, cancelText: "", confirmText: "确定",
+                success: () => { }
+            })
+            return null;
+        }
+        // 低版本兼容方法
+        let bannerAd = typeof wx.createBannerAd == 'function' ? wx.createBannerAd({
+            adUnitId: ad_id,
+            style: {
+                left: 0,
+                top: 0,
+                width: 350
+            }
+        }) : null;
+        if (bannerAd) {
+            bannerAd.show();
+            let { screenWidth, screenHeight } = wx.getSystemInfoSync()
+            bannerAd.onResize(res => {
+                // banner广告放在底部
+                bannerAd.style.top = screenHeight - bannerAd.style.realHeight;
+            });
+            bannerAd.style.width = screenWidth;
+        }
+        return bannerAd;
+    }
+
+
+}

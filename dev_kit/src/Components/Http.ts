@@ -13,17 +13,20 @@ class Api {
     public static baseUrl = baseUrl;
 
     // api地址
-    private static uploadRecordsPath = baseUrl + "/v1/upload_record"
-    public static bestRecordPath = baseUrl + "/v2/best_record"
-    public static getRankingsPath = baseUrl + "/v2/week_rank_list"
-    public static getShareUrlPath = baseUrl + "/share_url"
-    // public static getOpenIdPath = baseUrl + "/users"
-    public static postEventPath = baseUrl + "/events"
-    public static tunnelPath = baseUrl + "/tunnel"
-    public static configurationsPath = baseUrl + "/v1/config"
-    public static difficultyPath = baseUrl + "/v1/jsonconfig/difficulty_level"
-    public static loginPath = baseUrl + '/v1/auth_login'
+    public static loginPath = baseUrl + '/game-plane/api/v1/auth_login'                                      //登录游戏
+    private static uploadRecordsPath = baseUrl + "/game-plane/api/v1/upload_record"                          //上传成绩
+    public static bestRecordPath = baseUrl + "/game-plane/api/v2/best_record"                                //获取最好成绩
+    public static getRankingsPath = baseUrl + "/game-plane/api/v2/week_rank_list"                            //获取世界周排行榜
+    public static getShareUrlPath = baseUrl + "/game-plane/api/share_url"                                    //动态获取分享图片
+    public static postEventPath = baseUrl + "/game-plane/api/events"                                         //事件埋点上传
+    public static tunnelPath = baseUrl + "/game-plane/api/tunnel"                                            //获取socket地址
+    public static configurationsPath = baseUrl + "/game-plane/api/v1/config"                                 //获取游戏配置JSON
 
+    /**
+     * post请求数据，默认需要token才能请求
+     * @param  {} url post地址
+     * @param  {} data post数据，默认放在body内
+     */
     public static async post(url, data) {
         return new Promise((resolve, reject) => {
             if (!Api.token) {
@@ -45,6 +48,12 @@ class Api {
         })
     }
 
+
+    /**
+     * get请求数据
+     * @param  {} url 请求地址
+     * @param  {} noToken? 是否需要传入token，若为true，则不需要传token亦可访问
+     */
     public static async get(url, noToken?) {
         return new Promise((resolve, reject) => {
             if (!Api.token && !noToken) {

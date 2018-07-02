@@ -241,7 +241,7 @@ class eKit {
             shp.graphics.lineStyle(param.lineStyle.thickness, param.lineStyle.color, param.lineStyle.alpha, param.lineStyle.pixelHinting, param.lineStyle.scaleMode, param.lineStyle.caps, param.lineStyle.joints, param
                 .lineStyle.miterLimit);
         }
-        shp.graphics.drawArc(points[0], points[1], points[2], points[3], points[4], points[5]);
+        shp.graphics.drawRoundRect(points[0], points[1], points[2], points[3], points[4], points[5]);
         if (settings) {
             for (let key in settings) {
                 shp[key] = settings[key];

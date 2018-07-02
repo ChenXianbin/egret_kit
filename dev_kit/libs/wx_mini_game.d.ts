@@ -427,6 +427,23 @@ declare const wx: {
      * 发起米大师支付
      */
     requestMidasPayment(object: { mode: string, env: number, offerId: string, currencyType: string, platform: string, buyQuantity: number, zoneId: string, success: (res: any) => void, fail: (res: any) => void, complete?: (res: any) => void }): void;
+    /**
+     * 客服消息
+     */
+    openCustomerServiceConversation(object: any): void;
+    /**
+      * 游戏圈
+      */
+    createGameClubButton(object: any): void;
+
+    /**
+     * 视频流量主
+     */
+    createRewardedVideoAd(object: any): any;
+    /**
+     * banner广告
+     */
+    createBannerAd(object: any): any;
 }
 
 declare interface Canvas {
@@ -988,3 +1005,5 @@ declare interface UserInfoButton {
     offTap(callback: () => void): void;
     show(): void;
 }
+
+

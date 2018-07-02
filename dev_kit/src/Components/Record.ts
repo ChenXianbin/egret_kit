@@ -89,7 +89,6 @@ class Records {
 
         await WxKit.uploadScore(this.score || 0);
 
-        await Api.postEvent('uploadScore');
         return true;
     }
 
