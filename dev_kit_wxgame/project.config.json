@@ -8,9 +8,9 @@
 		"newFeature": true
 	},
 	"compileType": "game",
-	"libVersion": "2.0.9",
+	"libVersion": "2.1.1",
 	"appid": "wxef27dfb79ff23fba",
-	"projectname": "%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%A5%97%E4%BB%B6%E6%B5%8B%E8%AF%95",
+	"projectname": "%E5%88%86%E5%8C%85%E6%B5%8B%E8%AF%95",
 	"condition": {
 		"search": {
 			"current": -1,
