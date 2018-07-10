@@ -91,6 +91,11 @@ class Main extends egret.DisplayObjectContainer {
         // 绘制背景
         let sky = eKit.createBitmapByName("bg_jpg", { width: GameConfig.getWidth(), height: GameConfig.getHeight(), x: 0, y: 0, touchEnabled: true });
         this.addChild(sky);
+
+
+
+
+
         
         /**
          *常用调用示例,不需要登录的在第一列
