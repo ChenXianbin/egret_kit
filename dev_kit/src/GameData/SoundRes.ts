@@ -5,7 +5,8 @@ class SoundRes {
     public static eventSoundList = [
         { name: 'bgm_default', path: 'resource/assets/mp3/bgm_default.mp3' },
         { name: 'bgm_game', path: 'resource/assets/mp3/bgm_game2.mp3' },
-        { name: 'hit', path: 'resource/assets/mp3/hit.mp3' },
+        // 高频音效可填写cnt字段，多音轨队列播放，cnt表示队列容量
+        { name: 'hit', path: 'resource/assets/mp3/hit.mp3' ,cnt:10},
     ];
 
     // // 定义背景音乐路径

@@ -273,8 +273,8 @@ var GameConfig = (function () {
     GameConfig.getMain = function () {
         return this.stage;
     };
-    // http通讯地址
-    GameConfig.basicUrl = "https://test-api.wxagame.com";
+    // http通讯地址,请自行填入自己的服务器地址，若有跨域问题则点开开发工具详情，勾选不校验合法域名
+    GameConfig.basicUrl = "";
     // 游戏自定义ID
     GameConfig.appCode = 1;
     // 游戏版本号
@@ -1108,9 +1108,21 @@ var Mp3 = (function () {
     }
     Mp3.loadEventSound = function () {
         this.eventSoundList = SoundRes.eventSoundList.map(function (soundData) {
-            soundData['context'] = wx.createInnerAudioContext();
-            soundData['context'].src = soundData.path;
-            return soundData;
+            if (!soundData['cnt']) {
+                soundData['context'] = wx.createInnerAudioContext();
+                soundData['context'].src = soundData.path;
+                return soundData;
+            }
+            else {
+                var obj = { name: soundData.name, soundArr: [] };
+                for (var i = 0, l = soundData['cnt']; i < l; i++) {
+                    var res = {};
+                    res['context'] = wx.createInnerAudioContext();
+                    res['context'].src = soundData.path;
+                    obj['soundArr'].push(res);
+                }
+                return obj;
+            }
         });
     };
     Mp3.switchBgm = function (bgm_name) {
@@ -1118,15 +1130,18 @@ var Mp3 = (function () {
         this.bgm && this.bgm.pause();
         this.eventSoundList.map(function (soundData) {
             if (soundData.name == bgm_name) {
-                _this.bgm = soundData['context'];
+                if (soundData['context']) {
+                    _this.bgm = soundData['context'];
+                }
+                else {
+                    _this.bgm = soundData['soundArr'][0]['context'];
+                }
             }
         });
-        console.log(this.bgm);
         this.bgm && (this.bgm.loop = true);
         this.bgm && !this.mute && this.bgm.play();
     };
     Mp3.playBGM = function () {
-        // return false;
         this.bgm && !this.mute && this.bgm.play();
     };
     Mp3.stopBGM = function () {
@@ -1136,8 +1151,14 @@ var Mp3 = (function () {
         var _this = this;
         this.eventSoundList.map(function (soundData) {
             if (soundData.name == event_name) {
-                soundData['context'].stop();
-                !_this.mute && soundData['context'].play();
+                if (soundData['context']) {
+                    !_this.mute && soundData['context'].play();
+                }
+                else {
+                    var target = soundData['soundArr'][0];
+                    soundData['soundArr'].push(soundData['soundArr'].shift());
+                    !_this.mute && target['context'].play();
+                }
             }
         });
     };
@@ -1272,9 +1293,6 @@ var Records = (function () {
                         return [4 /*yield*/, WxKit.uploadScore(this.score || 0)];
                     case 2:
                         _a.sent();
-                        return [4 /*yield*/, Api.postEvent('uploadScore')];
-                    case 3:
-                        _a.sent();
                         return [2 /*return*/, true];
                 }
             });
@@ -1394,7 +1412,7 @@ var Main = (function (_super) {
          *常用调用示例,不需要登录的在第一列
          *
          */
-        // 切换北京音乐调用示例
+        // 切换背景音乐调用示例
         var bgm_btn = eKit.createSprite({ x: 20, y: 20 });
         this.addChild(bgm_btn);
         var bgm_btn_bg = eKit.createRect([0, 0, 120, 60], { beginFill: { color: 0x9988ff, alpha: 1 } }, { touchEnabled: true });
@@ -2046,7 +2064,8 @@ var SoundRes = (function () {
     SoundRes.eventSoundList = [
         { name: 'bgm_default', path: 'resource/assets/mp3/bgm_default.mp3' },
         { name: 'bgm_game', path: 'resource/assets/mp3/bgm_game2.mp3' },
-        { name: 'hit', path: 'resource/assets/mp3/hit.mp3' },
+        // 高频音效可填写cnt字段，多音轨队列播放，cnt表示队列容量
+        { name: 'hit', path: 'resource/assets/mp3/hit.mp3', cnt: 10 },
     ];
     return SoundRes;
 }());
