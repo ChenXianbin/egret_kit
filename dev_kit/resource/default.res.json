@@ -1,8 +1,12 @@
 {
 	"groups": [
 		{
-			"keys": "bg_jpg,boom_png,boom_json,bgm_default_mp3,bgm_game2_mp3,hit_mp3",
+			"keys": "bg_jpg,myplane_png",
 			"name": "preload"
+		},
+		{
+			"keys": "boom_json,boom_png",
+			"name": "subpackage"
 		}
 	],
 	"resources": [
@@ -17,29 +21,84 @@
 			"name": "description_json"
 		},
 		{
-			"url": "assets/boom.png",
+			"url": "assets/subpackage/boom.png",
 			"type": "image",
 			"name": "boom_png"
 		},
 		{
-			"url": "assets/boom.json",
+			"url": "assets/subpackage/egret_icon.png",
+			"type": "image",
+			"name": "egret_icon_png"
+		},
+		{
+			"url": "assets/subpackage/test001.jpg",
+			"type": "image",
+			"name": "test001_jpg"
+		},
+		{
+			"url": "assets/subpackage/mp3/bgm.mp3",
+			"type": "sound",
+			"name": "bgm_mp3"
+		},
+		{
+			"url": "assets/subpackage/mp3/bgm_default - 副本.mp3",
+			"type": "sound",
+			"name": "bgm_default - 副本_mp3"
+		},
+		{
+			"url": "assets/subpackage/mp3/bgm_default.mp3",
+			"type": "sound",
+			"name": "bgm_default_mp3"
+		},
+		{
+			"url": "assets/subpackage/mp3/bgm_game2 - 副本.mp3",
+			"type": "sound",
+			"name": "bgm_game2 - 副本_mp3"
+		},
+		{
+			"url": "assets/subpackage/mp3/bgm_game2.mp3",
+			"type": "sound",
+			"name": "bgm_game2_mp3"
+		},
+		{
+			"url": "assets/subpackage/mp3/fail.mp3",
+			"type": "sound",
+			"name": "fail_mp3"
+		},
+		{
+			"url": "assets/subpackage/mp3/fall_down.mp3",
+			"type": "sound",
+			"name": "fall_down_mp3"
+		},
+		{
+			"url": "assets/subpackage/mp3/hit.mp3",
+			"type": "sound",
+			"name": "hit_mp3"
+		},
+		{
+			"url": "assets/subpackage/mp3/success.mp3",
+			"type": "sound",
+			"name": "success_mp3"
+		},
+		{
+			"url": "assets/subpackage/partical/boom_01.png",
+			"type": "image",
+			"name": "boom_01_png"
+		},
+		{
+			"url": "assets/subpackage/boom.json",
 			"type": "json",
 			"name": "boom_json"
 		},
 		{
-			"name": "bgm_default_mp3",
-			"type": "sound",
-			"url": "assets/mp3/bgm_default.mp3"
+			"url": "assets/subpackage/partical/boom_01.json",
+			"type": "json",
+			"name": "boom_01_json"
 		},
 		{
-			"name": "bgm_game2_mp3",
-			"type": "sound",
-			"url": "assets/mp3/bgm_game2.mp3"
-		},
-		{
-			"name": "hit_mp3",
-			"type": "sound",
-			"url": "assets/mp3/hit.mp3"
+			"url": "assets/myplane.png",
+			"type": "image",
+			"name": "myplane_png"
 		}
 	]
 }

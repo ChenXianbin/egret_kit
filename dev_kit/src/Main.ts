@@ -59,16 +59,19 @@ class Main extends egret.DisplayObjectContainer {
     private async runGame() {
         await this.loadResource()
         this.createGameScene();
-        const result = await RES.getResAsync("description_json");
 
     }
 
     private async loadResource() {
         try {
             const loadingView = new LoadingUI();
+            loadingView.visible = false;
             this.stage.addChild(loadingView);
             await RES.loadConfig("resource/default.res.json", "resource/");
-            await RES.loadGroup("preload", 0, loadingView);
+            console.log('load_1');
+            await RES.loadGroup("preload", 0, null);
+            await RES.loadGroup("subpackage", 0, loadingView);
+            console.log('load_2');
             this.stage.removeChild(loadingView);
         }
         catch (e) {
@@ -93,10 +96,6 @@ class Main extends egret.DisplayObjectContainer {
         this.addChild(sky);
 
 
-
-
-
-        
         /**
          *常用调用示例,不需要登录的在第一列
          * 
@@ -128,7 +127,7 @@ class Main extends egret.DisplayObjectContainer {
         particle_btn.addChild(particle_btn_bg);
         particle_btn.addChild(eKit.createText('触发粒子', { width: 120, height: 60, size: 20, textAlign: 'center', verticalAlign: 'middle' }));
         particle_btn_bg.addEventListener(egret.TouchEvent.TOUCH_TAP, async () => {
-
+            // console.log(RES.getRes('boom_png'));
             let system = new particle.GravityParticleSystem(RES.getRes('boom_png'), RES.getRes('boom_json'));
             system.start(50);
             this.addChild(system);

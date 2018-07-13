@@ -1,5 +1,0 @@
-require("js/tween.min.js")
-require("js/particle.min.js")
-require("js/socket.min.js")
-require("js/physics.min.js")
-require("js/main.min.js")

@@ -9,8 +9,8 @@
 	"openDataContext": "openDataContext",
 	"subpackages": [
 		{
-			"name": "stage1",
-			"root": "stage1"
+			"name": "resource",
+			"root": "resource"
 		}
 	]
 }

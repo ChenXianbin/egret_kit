@@ -1,0 +1,15 @@
+{
+	"groups": [
+		{
+			"keys": "boom_png",
+			"name": "subpackage"
+		}
+	],
+	"resources": [
+		{
+			"url": "resource/assets/boom.png",
+			"type": "image",
+			"name": "boom_png"
+		}
+	]
+}

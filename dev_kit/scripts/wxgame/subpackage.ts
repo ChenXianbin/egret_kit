@@ -21,36 +21,42 @@ export class SubPackagePlugin {
 
     private verboseInfo: { filename: string, new_file_path: string }[] = [];
 
+    private includes: {} = {};
+
     constructor(private options: SubPackagePluginOptions) {
+
+        if (this.options.subPackages) {
+            this.options.subPackages.forEach((sub_package) => {
+                sub_package.includes.forEach((file_name) => {
+                    this.includes[file_name] = sub_package.root;
+                })
+
+            })
+        }
 
     }
 
     async onFile(file: plugins.File) {
         const filename = file.relative;
-        // console.log("the_file", filename, filename.split("\\").join('/'));
         const extname = path.extname(filename);
+
         if (extname == ".js") {
             const basename = path.basename(filename);
             let new_file_path = "js/" + basename.substr(0, basename.length - file.extname.length) + file.extname;
-
             let isSubPackage = false;
             if (this.options.subPackages) {
-                this.options.subPackages.forEach(function (item) {
-                    if (item.includes) {
-                        item.includes.forEach(function (item2) {
-                            let trans_filename = filename.split("\\").join('/')
-                            if (item2 == trans_filename) {
-                                // console.log('match_includes', trans_filename);
-                                new_file_path = item.root + "/js/" + basename.substr(0, basename.length - file.extname.length) + file.extname;
-                                isSubPackage = true;
-                            }
-                        });
-                    }
-                });
+                let trans_filename = filename.split("\\").join('/');
+                // 校验文件是否在subpackage包内，采用Object-key标识降低原来二层遍历的复杂度
+                if (this.includes[trans_filename]) {
+                    new_file_path = this.includes[trans_filename] + "/js/" + basename.substr(0, basename.length - file.extname.length) + file.extname;
+                    isSubPackage = true;
+                }
             }
+            // verbose为true则开启文件路径输出调试
             if (this.options.verbose) {
                 console.log(`SubPackagePlugin: ${filename} isSubPackage: ${isSubPackage}`);
             }
+
 
             file.path = path.join(file.base, new_file_path);
 
@@ -68,6 +74,7 @@ export class SubPackagePlugin {
                 this.verboseInfo.push({ filename, new_file_path })
             }
         }
+
         return file;
     }
     async onFinish(pluginContext: plugins.CommandContext) {
@@ -95,11 +102,6 @@ export class SubPackagePlugin {
                     switch (extname) {
                         case '.js':
                             return_location = `require("js/${path.basename(file)}")`
-                            break;
-                        case '.png':
-                        case '.jpg':
-                        case '.json':
-                            return_location = `require("assets/${path.basename(file)}")`
                             break;
                     }
                     return return_location

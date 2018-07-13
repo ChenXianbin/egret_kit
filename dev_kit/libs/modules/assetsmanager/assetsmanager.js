@@ -1,12 +1,12 @@
 var __reflect = (this && this.__reflect) || function (p, c, t) {
     p.__class__ = c, t ? t.push(c) : t = [c], p.__types__ = p.__types__ ? t.concat(p.__types__) : t;
 };
-var __extends = this && this.__extends || function __extends(t, e) { 
- function r() { 
- this.constructor = t;
-}
-for (var i in e) e.hasOwnProperty(i) && (t[i] = e[i]);
-r.prototype = e.prototype, t.prototype = new r();
+var __extends = this && this.__extends || function __extends(t, e) {
+    function r() {
+        this.constructor = t;
+    }
+    for (var i in e) e.hasOwnProperty(i) && (t[i] = e[i]);
+    r.prototype = e.prototype, t.prototype = new r();
 };
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -17,8 +17,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    var _ = { label: 0, sent: function () { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function () { return this; }), g;
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
@@ -344,7 +344,7 @@ var RES;
             this.config = { groups: {}, alias: {}, fileSystem: emptyFileSystem, typeSelector: function (p) { return p; }, resourceRoot: "resources", mergeSelector: null };
         };
         return ResourceConfig;
-    }());
+    } ());
     RES.ResourceConfig = ResourceConfig;
     __reflect(ResourceConfig.prototype, "RES.ResourceConfig");
 })(RES || (RES = {}));
@@ -456,59 +456,12 @@ var RES;
                 this_1.loadingCount++;
                 this_1.loadResource(r)
                     .then(function (response) {
-                    _this.loadingCount--;
-                    RES.host.save(r, response);
-                    var groupName = r.groupNames.shift();
-                    if (r.groupNames.length == 0) {
-                        r.groupNames = undefined;
-                    }
-                    var reporter = _this.reporterDic[groupName];
-                    _this.numLoadedDic[groupName]++;
-                    var current = _this.numLoadedDic[groupName];
-                    var total = _this.groupTotalDic[groupName];
-                    if (reporter && reporter.onProgress) {
-                        reporter.onProgress(current, total);
-                    }
-                    if (current == total) {
-                        var groupError = _this.groupErrorDic[groupName];
-                        _this.removeGroupName(groupName);
-                        delete _this.groupTotalDic[groupName];
-                        delete _this.numLoadedDic[groupName];
-                        delete _this.itemListDic[groupName];
-                        delete _this.groupErrorDic[groupName];
-                        var dispatcher = _this.dispatcherDic[groupName];
-                        if (groupError) {
-                            var itemList = _this.loadItemErrorDic[groupName];
-                            delete _this.loadItemErrorDic[groupName];
-                            var error = _this.errorDic[groupName];
-                            delete _this.errorDic[groupName];
-                            dispatcher.dispatchEventWith("error", false, { itemList: itemList, error: error });
-                        }
-                        else {
-                            dispatcher.dispatchEventWith("complete");
-                        }
-                    }
-                    _this.next();
-                }).catch(function (error) {
-                    if (!error.__resource_manager_error__) {
-                        throw error;
-                    }
-                    _this.loadingCount--;
-                    delete RES.host.state[r.root + r.name];
-                    var times = _this.retryTimesDic[r.name] || 1;
-                    if (times > _this.maxRetryTimes) {
-                        delete _this.retryTimesDic[r.name];
+                        _this.loadingCount--;
+                        RES.host.save(r, response);
                         var groupName = r.groupNames.shift();
                         if (r.groupNames.length == 0) {
-                            delete r.groupNames;
+                            r.groupNames = undefined;
                         }
-                        if (!_this.loadItemErrorDic[groupName]) {
-                            _this.loadItemErrorDic[groupName] = [];
-                        }
-                        if (_this.loadItemErrorDic[groupName].indexOf(r) == -1) {
-                            _this.loadItemErrorDic[groupName].push(r);
-                        }
-                        _this.groupErrorDic[groupName] = true;
                         var reporter = _this.reporterDic[groupName];
                         _this.numLoadedDic[groupName]++;
                         var current = _this.numLoadedDic[groupName];
@@ -523,23 +476,70 @@ var RES;
                             delete _this.numLoadedDic[groupName];
                             delete _this.itemListDic[groupName];
                             delete _this.groupErrorDic[groupName];
-                            var itemList = _this.loadItemErrorDic[groupName];
-                            delete _this.loadItemErrorDic[groupName];
                             var dispatcher = _this.dispatcherDic[groupName];
-                            dispatcher.dispatchEventWith("error", false, { itemList: itemList, error: error });
+                            if (groupError) {
+                                var itemList = _this.loadItemErrorDic[groupName];
+                                delete _this.loadItemErrorDic[groupName];
+                                var error = _this.errorDic[groupName];
+                                delete _this.errorDic[groupName];
+                                dispatcher.dispatchEventWith("error", false, { itemList: itemList, error: error });
+                            }
+                            else {
+                                dispatcher.dispatchEventWith("complete");
+                            }
+                        }
+                        _this.next();
+                    }).catch(function (error) {
+                        if (!error.__resource_manager_error__) {
+                            throw error;
+                        }
+                        _this.loadingCount--;
+                        delete RES.host.state[r.root + r.name];
+                        var times = _this.retryTimesDic[r.name] || 1;
+                        if (times > _this.maxRetryTimes) {
+                            delete _this.retryTimesDic[r.name];
+                            var groupName = r.groupNames.shift();
+                            if (r.groupNames.length == 0) {
+                                delete r.groupNames;
+                            }
+                            if (!_this.loadItemErrorDic[groupName]) {
+                                _this.loadItemErrorDic[groupName] = [];
+                            }
+                            if (_this.loadItemErrorDic[groupName].indexOf(r) == -1) {
+                                _this.loadItemErrorDic[groupName].push(r);
+                            }
+                            _this.groupErrorDic[groupName] = true;
+                            var reporter = _this.reporterDic[groupName];
+                            _this.numLoadedDic[groupName]++;
+                            var current = _this.numLoadedDic[groupName];
+                            var total = _this.groupTotalDic[groupName];
+                            if (reporter && reporter.onProgress) {
+                                reporter.onProgress(current, total);
+                            }
+                            if (current == total) {
+                                var groupError = _this.groupErrorDic[groupName];
+                                _this.removeGroupName(groupName);
+                                delete _this.groupTotalDic[groupName];
+                                delete _this.numLoadedDic[groupName];
+                                delete _this.itemListDic[groupName];
+                                delete _this.groupErrorDic[groupName];
+                                var itemList = _this.loadItemErrorDic[groupName];
+                                delete _this.loadItemErrorDic[groupName];
+                                var dispatcher = _this.dispatcherDic[groupName];
+                                dispatcher.dispatchEventWith("error", false, { itemList: itemList, error: error });
+                            }
+                            else {
+                                _this.errorDic[groupName] = error;
+                            }
+                            _this.next();
                         }
                         else {
-                            _this.errorDic[groupName] = error;
+                            _this.retryTimesDic[r.name] = times + 1;
+                            _this.failedList.push(r);
+                            _this.next();
+                            return;
                         }
-                        _this.next();
-                    }
-                    else {
-                        _this.retryTimesDic[r.name] = times + 1;
-                        _this.failedList.push(r);
-                        _this.next();
-                        return;
-                    }
-                });
+                    });
             };
             var this_1 = this;
             while (this.loadingCount < this.thread) {
@@ -619,6 +619,7 @@ var RES;
                 throw new RES.ResourceManagerError(2001, r.name, r.type);
             }
             RES.host.state[r.root + r.name] = 1;
+            // console.log('isSupport',p);
             var promise = p.onLoadStart(RES.host, r);
             r.promise = promise;
             return promise;
@@ -626,6 +627,9 @@ var RES;
         ResourceLoader.prototype.unloadResource = function (r) {
             var data = RES.host.get(r);
             if (!data) {
+
+
+
                 console.warn("尝试释放不存在的资源:", r.name);
                 return Promise.resolve();
             }
@@ -641,7 +645,7 @@ var RES;
             }
         };
         return ResourceLoader;
-    }());
+    } ());
     RES.ResourceLoader = ResourceLoader;
     __reflect(ResourceLoader.prototype, "RES.ResourceLoader");
 })(RES || (RES = {}));
@@ -735,7 +739,7 @@ var RES;
             2006: "资源配置文件中无法找到特定的资源:{0}"
         };
         return ResourceManagerError;
-    }(Error));
+    } (Error));
     RES.ResourceManagerError = ResourceManagerError;
     __reflect(ResourceManagerError.prototype, "RES.ResourceManagerError");
 })(RES || (RES = {}));
@@ -790,17 +794,17 @@ var RES;
                 var _this = this;
                 return __generator(this, function (_a) {
                     return [2 /*return*/, new Promise(function (reslove, reject) {
-                            var onSuccess = function () {
-                                var texture = loader['data'] ? loader['data'] : loader['response'];
-                                reslove(texture);
-                            };
-                            var onError = function () {
-                                var e = new RES.ResourceManagerError(1001, resource.url);
-                                reject(e);
-                            };
-                            loader.addEventListener(egret.Event.COMPLETE, onSuccess, _this);
-                            loader.addEventListener(egret.IOErrorEvent.IO_ERROR, onError, _this);
-                        })];
+                        var onSuccess = function () {
+                            var texture = loader['data'] ? loader['data'] : loader['response'];
+                            reslove(texture);
+                        };
+                        var onError = function () {
+                            var e = new RES.ResourceManagerError(1001, resource.url);
+                            reject(e);
+                        };
+                        loader.addEventListener(egret.Event.COMPLETE, onSuccess, _this);
+                        loader.addEventListener(egret.IOErrorEvent.IO_ERROR, onError, _this);
+                    })];
                 });
             });
         }
@@ -1023,6 +1027,7 @@ var RES;
                 });
             },
             getData: function (host, resource, key, subkey) {
+                console.log('get_data', console.log(arguments));
                 var data = host.get(resource);
                 if (data) {
                     return data.getTexture(subkey);
@@ -1131,20 +1136,20 @@ var RES;
                 var imageResource;
                 return host.load(resource, 'json')
                     .then(function (value) {
-                    mcData = value;
-                    var jsonPath = resource.name;
-                    var imagePath = jsonPath.substring(0, jsonPath.lastIndexOf(".")) + ".png";
-                    imageResource = host.resourceConfig.getResource(imagePath, true);
-                    if (!imageResource) {
-                        throw new RES.ResourceManagerError(1001, imagePath);
-                    }
-                    return host.load(imageResource);
-                }).then(function (value) {
-                    host.save(imageResource, value);
-                    var mcTexture = value;
-                    var mcDataFactory = new egret.MovieClipDataFactory(mcData, mcTexture);
-                    return mcDataFactory;
-                });
+                        mcData = value;
+                        var jsonPath = resource.name;
+                        var imagePath = jsonPath.substring(0, jsonPath.lastIndexOf(".")) + ".png";
+                        imageResource = host.resourceConfig.getResource(imagePath, true);
+                        if (!imageResource) {
+                            throw new RES.ResourceManagerError(1001, imagePath);
+                        }
+                        return host.load(imageResource);
+                    }).then(function (value) {
+                        host.save(imageResource, value);
+                        var mcTexture = value;
+                        var mcDataFactory = new egret.MovieClipDataFactory(mcData, mcTexture);
+                        return mcDataFactory;
+                    });
             },
             onRemoveStart: function (host, resource) {
                 var mcFactory = host.get(resource);
@@ -1175,6 +1180,7 @@ var RES;
                 });
             },
             getData: function (host, resource, key, subkey) {
+                console.log('get_data', console.log(arguments));
                 var data = host.get(resource);
                 if (data) {
                     return data[subkey];
@@ -1267,9 +1273,11 @@ var RES;
                 });
             },
             onRemoveStart: function () {
-                return __awaiter(this, void 0, void 0, function () { return __generator(this, function (_a) {
-                    return [2 /*return*/];
-                }); });
+                return __awaiter(this, void 0, void 0, function () {
+                    return __generator(this, function (_a) {
+                        return [2 /*return*/];
+                    });
+                });
             }
         };
         var PVRParser = (function () {
@@ -1370,7 +1378,7 @@ var RES;
             PVRParser.COMPRESSED_RGBA_PVRTC_4BPPV1_IMG = 0x8C02;
             PVRParser.COMPRESSED_RGBA_PVRTC_2BPPV1_IMG = 0x8C03;
             return PVRParser;
-        }());
+        } ());
         __reflect(PVRParser.prototype, "PVRParser");
         if (typeof egret != 'undefined' && egret && egret["web"] && egret["web"].WebGLRenderContext) {
             // Calcualates the size of a compressed texture level in bytes
@@ -1562,7 +1570,7 @@ var RES;
             return true;
         };
         return NewFileSystem;
-    }());
+    } ());
     RES.NewFileSystem = NewFileSystem;
     __reflect(NewFileSystem.prototype, "RES.NewFileSystem");
 })(RES || (RES = {}));
@@ -1782,7 +1790,7 @@ var RES;
          */
         ResourceEvent.GROUP_LOAD_ERROR = "groupLoadError";
         return ResourceEvent;
-    }(egret.Event));
+    } (egret.Event));
     RES.ResourceEvent = ResourceEvent;
     __reflect(ResourceEvent.prototype, "RES.ResourceEvent");
 })(RES || (RES = {}));
@@ -2139,6 +2147,8 @@ var RES;
      * @language zh_CN
      */
     function isGroupLoaded(name) {
+        if (!instance)
+            instance = new Resource();
         return instance.isGroupLoaded(name);
     }
     RES.isGroupLoaded = isGroupLoaded;
@@ -2163,6 +2173,8 @@ var RES;
      * @language zh_CN
      */
     function getGroupByName(name) {
+        if (!instance)
+            instance = new Resource();
         return instance.getGroupByName(name).map(function (r) { return RES.ResourceItem.convertToResItem(r); });
     }
     RES.getGroupByName = getGroupByName;
@@ -2192,6 +2204,8 @@ var RES;
      */
     function createGroup(name, keys, override) {
         if (override === void 0) { override = false; }
+        if (!instance)
+            instance = new Resource();
         return instance.createGroup(name, keys, override);
     }
     RES.createGroup = createGroup;
@@ -2212,6 +2226,8 @@ var RES;
      * @language zh_CN
      */
     function hasRes(key) {
+        if (!instance)
+            instance = new Resource();
         return instance.hasRes(key);
     }
     RES.hasRes = hasRes;
@@ -2255,10 +2271,14 @@ var RES;
      * @language zh_CN
      */
     function getRes(key) {
+        if (!instance)
+            instance = new Resource();
         return instance.getRes(key);
     }
     RES.getRes = getRes;
     function getResAsync(key, compFunc, thisObject) {
+        if (!instance)
+            instance = new Resource();
         return instance.getResAsync.apply(instance, arguments);
     }
     RES.getResAsync = getResAsync;
@@ -2286,6 +2306,8 @@ var RES;
      */
     function getResByUrl(url, compFunc, thisObject, type) {
         if (type === void 0) { type = ""; }
+        if (!instance)
+            instance = new Resource();
         instance.getResByUrl(url, compFunc, thisObject, type);
     }
     RES.getResByUrl = getResByUrl;
@@ -2310,6 +2332,8 @@ var RES;
      * @language zh_CN
      */
     function destroyRes(name, force) {
+        if (!instance)
+            instance = new Resource();
         return instance.destroyRes(name, force);
     }
     RES.destroyRes = destroyRes;
@@ -2352,6 +2376,8 @@ var RES;
      * @language zh_CN
      */
     function setMaxRetryTimes(retry) {
+        if (!instance)
+            instance = new Resource();
         instance.setMaxRetryTimes(retry);
     }
     RES.setMaxRetryTimes = setMaxRetryTimes;
@@ -2513,6 +2539,7 @@ var RES;
             });
         };
         Resource.prototype._loadGroup = function (name, priority, reporter) {
+
             if (priority === void 0) { priority = 0; }
             var resources = RES.config.getGroupByName(name, true);
             return RES.queue.load(resources, name, priority, reporter);
@@ -2554,6 +2581,7 @@ var RES;
          */
         Resource.prototype.getRes = function (resKey) {
             var result = RES.config.getResourceWithSubkey(resKey);
+            // console.log('getRes', resKey, result);
             if (result) {
                 var r = result.r;
                 var key = result.key;
@@ -2704,7 +2732,7 @@ var RES;
             RES.checkCancelation
         ], Resource.prototype, "getResByUrl", null);
         return Resource;
-    }(egret.EventDispatcher));
+    } (egret.EventDispatcher));
     RES.Resource = Resource;
     __reflect(Resource.prototype, "RES.Resource");
     /**

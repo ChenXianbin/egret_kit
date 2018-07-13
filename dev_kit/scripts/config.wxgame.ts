@@ -24,20 +24,38 @@ const config: ResourceManagerConfig = {
                     new WxgamePlugin(),
                     // new ManifestPlugin({ output: 'manifest.js' })
                     new SubPackagePlugin({
+                        // output为主包加载的资源manifest.js
                         output: 'manifest.js',
-                        subPackages: [
-                            {
-                                root: "stage1",
-                                "includes": [
-                                    "libs/modules/tween/tween.js",
-                                    "libs/modules/particle/particle.js",
-                                    "libs/modules/socket/socket.js",
-                                    "libs/modules/physics/physics.js",
-                                    "main.js"
 
-                                ]
+                        subPackages: [
+
+                            ////////////////////////////////////////////////
+                            // resource 资源分包使用,注意在resource文件夹下放一份空的game.js
+                            // 需要做loading界面的资源，可以在wxgame项目下增加 preload 文件夹 放入资源，然后在EgretSubPackageLoading.js调用
+                            {
+                                root: "resource",
+                                "includes": [],
                             }
-                        ]
+                            ///////////////////////////////////////////////
+
+                            ///////////////////////////////////////////////
+                            //  JS代码分包示例，需要对应调整 game.json内 subpackages 配置项
+                            //  目前微信在IOS端对于多个分包加载支持存在BUG待修复
+                            //
+                            // {
+                            //     root: "subpackage",
+                            //     "includes": [
+                            //         "main.js",
+                            //         "libs/modules/tween/tween.js",
+                            //         "libs/modules/particle/particle.js",
+                            //         "libs/modules/physics/physics.js"
+                            //     ],
+                            // }
+                            ////////////////////////////////////////////////
+
+                        ],
+                        // verbose为true则开启文件路径输出调试
+                        verbose: true
                     })
                 ]
             }
@@ -60,14 +78,8 @@ const config: ResourceManagerConfig = {
                         output: 'manifest.js',
                         subPackages: [
                             {
-                                root: "stage1",
-                                "includes": [
-                                    "libs/modules/tween/tween.min.js",
-                                    "libs/modules/particle/particle.min.js",
-                                    "libs/modules/socket/socket.min.js",
-                                    "libs/modules/physics/physics.min.js",
-                                    "main.min.js"
-                                ]
+                                root: "resource",
+                                "includes": [],
                             }
                         ]
                     })

@@ -42,19 +42,27 @@ if (wx.loadSubpackage) {
   require("./EgretSubPackageLoading.js");
   runOptions.entryClassName = "EgretSubPackageLoading";
   runEgret();
-  let task = wx.loadSubpackage({
+  let task_resource = wx.loadSubpackage({
     // 开发者根据自身需求更改
-    name: "stage1",
+    name: "resource",
     success: function() {
+      console.log('resource_success');
       EgretSubPackageLoading.instance.onSuccess();
+
+      let img = wx.createImage();
+      img.onload = (data) => {
+        console.log('loaded', data)
+      }
+      img.src = 'preload/bg.jpg'
     }
   });
 
-  task.onProgressUpdate(res => {
+  task_resource.onProgressUpdate(res => {
     EgretSubPackageLoading.instance.setProgress(res);
   })
 } else {
   //
-  require("./stage1/game.js");
+  require("resource/game.js");
+  require("logic/game.js");
   runEgret();
 }
