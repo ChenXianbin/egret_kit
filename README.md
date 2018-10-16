@@ -113,7 +113,7 @@
 
    8.创建圆角矩形矢量绘图对象：eKit.createRoundRect(points: Array<any>, param: { beginFill?: { color: number, alpha: number }, lineStyle?: { thickness?: number, color?: number, alpha?: number, pixelHinting?: boolean, scaleMode?: string, caps?: string, joints?: string, miterLimit?: number } }, settings?: Object): egret.Shape
 
-   9.创建序列帧方法（todo）
+   9.创建序列帧方法（已完成）
     
    10.创建Sprite方法（完成）
     
@@ -121,7 +121,9 @@
     
    12.清空父元素内的子节点（完成）
     
-   13.粒子系统封装（todo）
+   13.粒子系统封装（已完成）
+
+
 
 ### 14.引导判定封装(todo)
 
